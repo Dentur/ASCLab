@@ -1,7 +1,14 @@
+# Explicit
+mylexer.c
+mylexer.h
+myparser.c
+myparser.h
+
 # Compiled Object files
 *.slo
 *.lo
 *.o
+*.v
 *.obj
 
 # Precompiled Headers
