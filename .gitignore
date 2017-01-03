@@ -3,6 +3,7 @@ mylexer.c
 mylexer.h
 myparser.c
 myparser.h
+lex.yy.c
 
 # Compiled Object files
 *.slo
