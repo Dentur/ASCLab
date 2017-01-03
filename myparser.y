@@ -3,7 +3,7 @@
 myparser.y
 ParserWizard generated YACC file.
 
-Date: Monday, January 02, 2017
+Date: Montag, 2. Januar 2017
 ****************************************************************************/
 
 #include "mylexer.h"
@@ -11,24 +11,6 @@ Date: Monday, January 02, 2017
 
 /////////////////////////////////////////////////////////////////////////////
 // declarations section
-
-// parser name
-%name myparser
-
-// class definition
-{
-	// place any extra class members here
-}
-
-// constructor
-{
-	// place any extra initialisation code here
-}
-
-// destructor
-{
-	// place any extra cleanup code here
-}
 
 // attribute type
 %include {
@@ -57,14 +39,6 @@ Grammar
 
 int main(void)
 {
-	int n = 1;
-	mylexer lexer;
-	myparser parser;
-	if (parser.yycreate(&lexer)) {
-		if (lexer.yycreate(&parser)) {
-			n = parser.yyparse();
-		}
-	}
-	return n;
+	return yyparse();
 }
 
