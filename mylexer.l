@@ -6,8 +6,7 @@ ParserWizard generated Lex file.
 Date: Montag, 2. Januar 2017
 ****************************************************************************/
 
-//#include "myparser.h"
-#include "lexerHeader.h"
+#include "myparser.h"
 %}
 
 /*
@@ -32,12 +31,20 @@ NOTEQUAL !=
 */
 
 %%
-RELATIV_DIRECTION_CONST  { return RELATIVE_DIRECTION;}
-ABSOLUTE_DIRECTION_CONST { return ABSOLUTE_DIRECTION;}
-DIRECTION_CONST			{ return DIRECTION;}
-FLOOR_CONST				{ return FLOOR;}
-ALL_DIRECTIONS_CONST    { return ALL_DIRECTIONS;}
-WALLS_CONST				{ return WALLS;}
+"NORTH"					{ return NORTH;}
+"SOUTH"					{ return SOUTH;}
+"EAST"					{ return EAST;}
+"WEST"					{ return WEST;}
+"LEFT"					{ return LEFT;}
+"RIGHT"					{ return RIGHT;}
+"BACK"					{ return BACK;}
+"FORWARD"				{ return FORWARD;}
+"THIS"					{ return FLOOR;}
+"FREE"					{ return FREE;}
+"WALL"					{ return WALL;}
+"GOAL"					{ return GOAL;}
+"MARK"					{ return MARK;}
+"STONE"					{ return STONE;}
 ";"						{ return COMMANDEND;}
 "{"						{ return BEGIN;}
 "}"						{ return END;}
@@ -102,18 +109,23 @@ GREATERTHAN				{ return GE;}
 						*(yylval.str+yyleng-2) = 0; // EOS
 						return STRING;
 						}
+[ \t]+				; //Ignoriere Whitespace
+.					{
+						printf("Unexpected token: %c\n", *yytext);
+					}
 %%
 /////////////////////////////////////////////////////////////////////////////
 // programs section
 
-extern FILE *yyin;
-extern FILE *yyout;
+//extern FILE *yyin;
+//extern FILE *yyout;
 
 yywrap() {
 	fclose( yyin);
  	exit(1);
 }
 
+/*
 void printtoken(int token){
 	switch( token)
 	{
@@ -241,3 +253,4 @@ void main( int argc, char *argv[]) {
 	while( (token = yylex()) > 0)
 		printtoken( token);
 }
+*/

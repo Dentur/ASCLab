@@ -1,10 +1,47 @@
-typedef union
-{
-	double num;
-	char *str;
-} YYSTYPE;
+#ifndef PT_ENTRY
 
-extern YYSTYPE yylval;
+#define PT_ENTRY struct pt_entry
+
+PT_ENTRY
+{
+	int type;
+	PT_ENTRY *nxt;
+	PT_ENTRY *op1;
+	PT_ENTRY *op2;
+	PT_ENTRY *op3;
+	PT_ENTRY *op4;
+	int num;
+	double fnum;
+	char *str;
+	int boolval;
+	char* identifier;
+};
+enum wall_types{
+	FREE,
+	WALL,
+	FINISH,
+	MARKER,
+	STONE
+};
+enum dir{
+	NORTH,
+	EAST,
+	SOUTH,
+	WEST,
+	FORWARD,
+	LEFT,
+	RIGHT,
+	BACK
+};
+
+#define PROGRAM 1000
+#define LOAD_CMD 1001
+#define MOVE_CMD 1002
+#define TURN_CMD 1003
+#define STEP_CMD 1004
+
+#define DIRECTION 1100
+#define WALL_TYPE 1101
 
 #define RELATIVE_DIRECTION 200
 #define ABSOLUTE_DIRECTION 201
@@ -62,3 +99,5 @@ extern YYSTYPE yylval;
 #define IDENTIFIER 253
 #define DIGIT 254
 #define STRING 255
+
+#endif
