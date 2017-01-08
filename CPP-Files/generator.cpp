@@ -101,7 +101,7 @@ void generate( PT_ENTRY *pentry) {
 
 			//Main function
 			fprintf(cfile, "int main() {\n");
-			fprintf(cfile, "Labyrinth lab();\n");
+			fprintf(cfile, "Labyrinth lab = Labyrinth();\n");
 			generate(pentry->op1);
 			for(PT_ENTRY* pt = pentry->op2; pt; pt = pt->nxt)
 				generate(pt);
@@ -141,6 +141,9 @@ void generate( PT_ENTRY *pentry) {
 			for(PT_ENTRY* pt = pentry->op2; pt; pt = pt->nxt)
 				generate(pt);
 			fprintf(cfile, "}\n");
+			break;
+		case BREAK_CMD:
+			fprintf(cfile, "break;\n");
 			break;
 		case IF_CMD :
 			fprintf(cfile, "if (");

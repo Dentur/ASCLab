@@ -142,6 +142,9 @@ void generate( PT_ENTRY *pentry) {
 				generate(pt);
 			fprintf(cfile, "}\n");
 			break;
+		case BREAK_CMD:
+			fprintf(cfile, "break;\n");
+			break;
 		case IF_CMD :
 			fprintf(cfile, "if (");
 			generate(pentry->op1);

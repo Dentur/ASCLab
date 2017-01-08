@@ -1,4 +1,23 @@
 load "C:\Users\Tim\Desktop\FH\ASC\Project\Testfiles\lab.txt" ;
 {
-	turn RIGHT;
+	while (look FORWARD != GOAL) {
+		while ((look RIGHT == WALL) AND (look FORWARD != WALL)){
+			move FORWARD;
+		}
+		if ((look RIGHT == GOAL) OR (look FORWARD == GOAL)){
+			break;
+		} else {
+			if (look RIGHT != WALL) {
+				move RIGHT;
+			} else {
+				if (look FORWARD == WALL){
+					if (look LEFT == WALL){
+						move BACK;
+					} else {
+						move LEFT;
+					}
+				}
+			}
+		}
+	}
 }

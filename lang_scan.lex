@@ -51,8 +51,8 @@ NOTEQUAL !=
 SINGLE_COMMENT			{ return COMMENT;}
 "true"					{ return TRUE;}
 "false"					{ return FALSE;}
-EQUAL					{ return EQ;}
-NOTEQUAL				{ return NE;}
+"=="					{ return EQ;}
+"!="					{ return NE;}
 LESS					{ return LT;}
 LESSTHAN				{ return LE;}
 GREATER					{ return GT;}
@@ -61,9 +61,9 @@ GREATERTHAN				{ return GE;}
 "+"						{ return PLUS;}
 "-"						{ return MINUS;}
 \.						{ return CONCAT;}
-"und"					{ return AND;}
-"oder"					{ return OR;}
-"nicht"					{ return NOT;}
+"AND"					{ return AND;}
+"OR"					{ return OR;}
+"NOT"					{ return NOT;}
 "int"					{ return INT_VAR;}
 "bool"					{ return BOOL_VAR;}
 "direction"				{ return DIR_VAR;}
@@ -90,6 +90,7 @@ GREATERTHAN				{ return GE;}
 "if"					{ return IF;}
 "else"					{ return ELSE;}
 "print"					{ return PRINT;}
+"break"					{ return BREAK;}
 
 [a-zA-Z_][a-zA-Z0-9_]*	{
 						yylval.str = malloc( yyleng+1);

@@ -29,6 +29,7 @@ PT_ENTRY
 #define LOOK_CMD_RET 	1009
 #define IF_CMD 			1010
 #define SETSTONE_CMD 	1011
+#define BREAK_CMD 		1012
 
 #define OP_EQ			1100
 #define OP_NE			1101

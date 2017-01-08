@@ -51,6 +51,7 @@ void yyerror(char *s);
 %token IF
 %token ELSE
 %token IDENTIFIER
+%token BREAK
 
 //COMMAND HELPER
 %token COMMANDEND
@@ -96,6 +97,9 @@ void yyerror(char *s);
 %type <pt>cmdBlock
 %type <pt>cmdSeq
 %type <pt>cmd
+%type <pt>loopBlock
+%type <pt>loopSeq
+%type <pt>loopCmd
 %type <pt>ret_cmd
 %type <pt>direction
 %type <pt>while_cmd
@@ -164,6 +168,33 @@ comments: 		COMMENT comments
 				{
 					//Do Nothing
 				};
+loopBlock:		BEGIN_BLOCK loopSeq END_BLOCK
+				{
+					$$ = $2;
+				};
+loopSeq:		cmd loopSeq
+				{
+					$1->nxt = $2;
+					$$ = $1;
+				}
+			  |	loopCmd loopSeq
+			    {
+					$1->nxt = $2;
+					$$=$1;
+				}
+			  | cmd
+				{
+					$$ = $1;
+				}
+			  | loopCmd
+				{
+					$$ = $1;
+				};
+loopCmd:		BREAK COMMANDEND
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = BREAK_CMD;
+				};
 cmdBlock: 		BEGIN_BLOCK cmdSeq END_BLOCK
 				{
 					$$ = $2;
@@ -221,6 +252,11 @@ cmd:			TURN direction COMMANDEND
 						$1->type = LOOK_CMD;
 					}
 					$$ = $1;
+				}
+			  | BREAK COMMANDEND
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = BREAK_CMD;
 				};
 if_cmd	:		IF bool_expr cmdBlock
 				{
@@ -369,6 +405,20 @@ bool_expr	:	rel_expr
 					$$->op2 = $3;
 				}
 			|   wall NE wall
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_NE;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			|   ret_cmd EQ wall
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_EQ;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			|   ret_cmd NE wall
 				{
 					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
 					$$->type = OP_NE;
