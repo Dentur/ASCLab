@@ -35,3 +35,6 @@ lex.yy.c
 *.exe
 *.out
 *.app
+*.tab.c
+*.tab.h
+CPP-Project/*

@@ -1,14 +1,10 @@
 %{
-/****************************************************************************
-myparser.y
-ParserWizard generated YACC file.
-
-Date: Montag, 2. Januar 2017
-****************************************************************************/
-
-#include "mylexer.h"
+//#include "mylexer.h"
 #include "lexerHeader.h"
 #include "generator.h"
+#include <stdio.h>
+#include <stdlib.h>
+void yyerror(char *s);    
 %}
 
 /////////////////////////////////////////////////////////////////////////////
@@ -19,12 +15,29 @@ Date: Montag, 2. Januar 2017
 	struct pt_entry* pt;
 }
 
-// attribute type
-%include {
-#ifndef YYSTYPE
-#define YYSTYPE int
-#endif
-}
+//UNUSED TOKENS
+%token PRINT
+%token MDELETE
+%token MARKER
+%token MTOTAL
+%token GOALX
+%token GOALY
+%token POSX
+%token POSY
+%token GDIR
+%token MDIR
+%token MVAL
+%token SMARK
+%token TELEPORT
+%token WALL_VAR
+%token DIR_VAR
+%token BOOL_VAR
+%token INT_VAR
+%token CONCAT
+%token ASGN
+%token FALSE
+%token TRUE
+%token FLOOR
 
 //COMMAND TOKENS
 %token COMMENT
@@ -37,11 +50,12 @@ Date: Montag, 2. Januar 2017
 %token WHILE
 %token IF
 %token ELSE
+%token IDENTIFIER
 
 //COMMAND HELPER
 %token COMMANDEND
-%token BEGIN
-%token END
+%token BEGIN_BLOCK
+%token END_BLOCK
 %token LEFTB
 %token RIGHTB
 
@@ -66,7 +80,7 @@ Date: Montag, 2. Januar 2017
 //VALUE TOKEN
 %token <str>STRING
 %token <str>VARIABLE
-%token <int>DIGIT
+%token <num>DIGIT
 
 //OPERATION TOKEN
 %left OR
@@ -139,7 +153,7 @@ program: 		comments loadLab comments cmdBlock comments
 loadLab: 		LOAD STRING COMMANDEND
 				{
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
-					$$->type = LOAD;
+					$$->type = LOAD_CMD;
 					$$->str = $2;
 				};
 comments: 		COMMENT comments
@@ -150,7 +164,7 @@ comments: 		COMMENT comments
 				{
 					//Do Nothing
 				};
-cmdBlock: 		BEGIN cmdSeq END
+cmdBlock: 		BEGIN_BLOCK cmdSeq END_BLOCK
 				{
 					$$ = $2;
 				};
@@ -234,7 +248,7 @@ arith_expr :	DIGIT
 				{
 					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
 					$$->type = VAL_DIGIT;
-					$$->fnum = $1;
+					$$->num = $1;
 				}
 			|	VARIABLE
 				{
@@ -448,13 +462,16 @@ direction:		NORTH
 /////////////////////////////////////////////////////////////////////////////
 // programs section
 
+extern FILE *yyin;
+extern FILE *yyout;
+
 int main(int argc, char *argv[])
 {
 	yyout = stdout;
 	if( argc > 1)
 		yyin = fopen( argv[2], "r");
 	else
-		yyin = fopen("C:\\Users\\Tim\\Desktop\\FH\\ASC\\Project\\Testfiles\\testProg.txt");
+		yyin = fopen("C:\\Users\\Tim\\Desktop\\FH\\ASC\\Project\\Testfiles\\testProg.txt", "r");
 	yyparse();
 }
 

@@ -22,6 +22,12 @@ for %%i in (*.y) do (
 	IF EXIST "%%~ni.v" (
 		del "%%~ni.v"
 	)
+	IF EXIST "%%~ni.tab.h" (
+		del "%%~ni.tab.h"
+	)
+	IF EXIST "%%~ni.tab.c" (
+		del "%%~ni.tab.c"
+	)
 )
 for %%i in (*.exe) do (
 	echo "Delete %%i..."

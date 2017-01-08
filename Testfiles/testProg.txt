@@ -1,1 +1,4 @@
-load("C:\Users\Tim\Desktop\FH\ASC\Project\Testfiles\lab.txt")
+load "C:\Users\Tim\Desktop\FH\ASC\Project\Testfiles\lab.txt" ;
+{
+	turn RIGHT;
+}
