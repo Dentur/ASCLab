@@ -8,6 +8,7 @@ Date: Montag, 2. Januar 2017
 
 #include "mylexer.h"
 #include "lexerHeader.h"
+#include "generate.h"
 %}
 
 /////////////////////////////////////////////////////////////////////////////
@@ -25,38 +26,71 @@ Date: Montag, 2. Januar 2017
 #define YYSTYPE int
 #endif
 }
-%token COMMANDEND
+
+//COMMAND TOKENS
 %token COMMENT
 %token LOAD
-%token NORTH
-%token SOUTH
-%token EAST
-%token WEST
-%token LEFT
-%token RIGHT
-%token FORWARD
-%token BACK
-%token BEGIN
-%token END
+%token LOOK
 %token MOVE
 %token TURN
 %token STEP
-%token <str>STRING
+%token SSTONE
+%token WHILE
+%token IF
+%token ELSE
 
+//COMMAND HELPER
+%token COMMANDEND
+%token BEGIN
+%token END
+%token LEFTB
+%token RIGHTB
+
+//DIRECTION TOKEN
+%token NORTH
+%token EAST
+%token SOUTH
+%token WEST
+%token FORWARD
+%token LEFT
+%token BACK
+%token RIGHT
+
+
+//WALL TOKEN
+%token FREE
+%token WALL
+%token MARK
+%token STONE
+%token GOAL
+
+//VALUE TOKEN
+%token <str>STRING
+%token <str>VARIABLE
+%token <int>DIGIT
+
+//OPERATION TOKEN
+%left OR
+%left AND
+%left NOT
+%left EQ NE GT LT GE LE
+%left PLUS MINUS
+
+//ENTRY TOKEN
 %type <pt>program
 %type <pt>loadLab
 %type <pt>comments
 %type <pt>cmdBlock
 %type <pt>cmdSeq
 %type <pt>cmd
+%type <pt>ret_cmd
 %type <pt>direction
-%type <pt>while_block
-%type <pt>if_block
-%type <pt>assignment
+%type <pt>while_cmd
+%type <pt>if_cmd
+//%type <pt>assignment
 %type <pt>arith_expr
 %type <pt>rel_expr
 %type <pt>bool_expr
-%type <pt>direction
 %type <pt>wall
 
 %start program
@@ -76,6 +110,31 @@ program: 		comments loadLab comments cmdBlock comments
 					$$->type = PROGRAM;
 					$$->op1 = $2;
 					$$->op2 = $4;
+					createFile();
+					generate($$);
+					closeFile();
+					//TODO GENERATE C-FILE
+				}
+			  | loadLab cmdBlock
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = PROGRAM;
+					$$->op1 = $1;
+					$$->op2 = $2;
+					createFile();
+					generate($$);
+					closeFile();
+					//TODO GENERATE C-FILE
+				}
+			  | comments loadLab cmdBlock
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = PROGRAM;
+					$$->op1 = $2;
+					$$->op2 = $3;
+					createFile();
+					generate($$);
+					closeFile();
 					//TODO GENERATE C-FILE
 				};
 loadLab: 		LOAD STRING COMMANDEND
@@ -91,8 +150,7 @@ comments: 		COMMENT comments
 			  | COMMENT
 				{
 					//Do Nothing
-				}
-			  | ;
+				};
 cmdBlock: 		BEGIN cmdSeq END
 				{
 					$$ = $2;
@@ -106,7 +164,12 @@ cmdSeq:			cmd cmdSeq
 			    {
 					$$ = $1;
 			    };
-
+ret_cmd:		LOOK direction
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = LOOK_CMD_RET;
+					$$->op1 = $2;
+				};
 cmd:			TURN direction COMMANDEND
 				{
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
@@ -124,7 +187,215 @@ cmd:			TURN direction COMMANDEND
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = STEP_CMD;
 					$$->op1 = $2;
+				}
+			  | SSTONE direction COMMANDEND
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = SETSTONE_CMD;
+					$$->op1 = $2;
+				}
+			  | while_cmd
+			    {
+					$$ = $1;
+				}
+			  | if_cmd
+				{
+					$$ = $1;
+				}
+			  | ret_cmd COMMANDEND
+				{
+					if($1->type == LOOK_CMD_RET){
+						$1->type = LOOK_CMD;
+					}
+					$$ = $1;
 				};
+if_cmd	:		IF bool_expr cmdBlock
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = IF_CMD;
+					$$->op1 = $2;
+					$$->op2 = $3;	
+				}
+			|	IF bool_expr cmdBlock ELSE cmdBlock
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = IF_CMD;
+					$$->op1 = $2;
+					$$->op2 = $3;
+					$$->op3 = $5;
+				};
+while_cmd :		WHILE bool_expr cmdBlock
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = WHILE_CMD;
+					$$->op1 = $2;
+					$$->op2 = $3;	
+				};
+arith_expr :	DIGIT
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = VAL_DIGIT;
+					$$->fnum = $1;
+				}
+			|	VARIABLE
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = ID_VARIABLE;
+					$$->identifier = $1;
+				}
+			|	MINUS arith_expr
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_UMINUS;
+					$$->op1 = $2;
+				}
+			|	LEFTB arith_expr RIGHTB
+				{
+					$$ = $2;
+				}
+			|	arith_expr PLUS arith_expr
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_PLUS;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			|	arith_expr MINUS arith_expr
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_MINUS;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				};
+rel_expr :		arith_expr EQ arith_expr
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_EQ;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			|	arith_expr NE arith_expr
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_NE;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			|	arith_expr LT arith_expr
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_LT;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			|	arith_expr LE arith_expr
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_LE;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			|	arith_expr GT arith_expr
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_GT;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			|	arith_expr GE arith_expr
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_GE;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				};
+bool_expr	:	rel_expr
+				{
+					$$ = $1;
+				}
+			|	NOT rel_expr
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_NOT;
+					$$->op1 = $2;
+				}
+			|	bool_expr OR bool_expr
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_OR;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			|	bool_expr AND bool_expr
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_AND;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			
+			|   direction EQ direction
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_EQ;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			|   direction NE direction
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_NE;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			|   wall EQ wall
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_EQ;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			|   wall NE wall
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = OP_NE;
+					$$->op1 = $1;
+					$$->op2 = $3;
+				}
+			|	LEFTB bool_expr RIGHTB
+				{
+					$$ = $2;
+				};	
+wall:			FREE
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = WALL_TYPE;
+					$$->num = 0;
+				}
+			  | WALL
+			    {
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = WALL_TYPE;
+					$$->num = 1;
+			    }
+			  | MARK
+			    {
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = WALL_TYPE;
+					$$->num = 2;
+			    }
+			  | STONE
+			    {
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = WALL_TYPE;
+					$$->num = 3;
+			    }
+			  | GOAL
+			    {
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = WALL_TYPE;
+					$$->num = 4;
+			    };
 direction:		NORTH
 				{
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
@@ -161,13 +432,13 @@ direction:		NORTH
 					$$->type = DIRECTION;
 					$$->num = 5;
 			    }
-			  | RIGHT
+			  | BACK
 			    {
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = DIRECTION;
 					$$->num = 6;
 			    }
-			  | BACK
+			  | RIGHT
 			    {
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = DIRECTION;
@@ -178,8 +449,13 @@ direction:		NORTH
 /////////////////////////////////////////////////////////////////////////////
 // programs section
 
-int main(void)
+int main(int argc, char *argv[])
 {
-	return yyparse();
+	yyout = stdout;
+	if( argc > 1)
+		yyin = fopen( argv[2], "r");
+	else
+		yyin = fopen("C:\\Users\\Tim\\Desktop\\FH\\ASC\\Project\\Testfiles\\testProg.txt");
+	yyparse();
 }
 

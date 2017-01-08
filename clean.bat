@@ -31,3 +31,7 @@ echo "Delete lex.yy.c..."
 IF EXIST "lex.yy.c" (
 	del "lex.yy.c"
 )
+echo "Delete myparser.tab.c..."
+IF EXIST "myparser.tab.c" (
+	del "myparser.tab.c"
+)

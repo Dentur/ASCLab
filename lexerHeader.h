@@ -16,33 +16,36 @@ PT_ENTRY
 	int boolval;
 	char* identifier;
 };
-enum wall_types{
-	FREE,
-	WALL,
-	FINISH,
-	MARKER,
-	STONE
-};
-enum dir{
-	NORTH,
-	EAST,
-	SOUTH,
-	WEST,
-	FORWARD,
-	LEFT,
-	RIGHT,
-	BACK
-};
 
-#define PROGRAM 1000
-#define LOAD_CMD 1001
-#define MOVE_CMD 1002
-#define TURN_CMD 1003
-#define STEP_CMD 1004
+#define PROGRAM 		1000
+#define LOAD_CMD 		1001
+#define MOVE_CMD 		1002
+#define TURN_CMD 		1003
+#define STEP_CMD 		1004
+#define LOOK_CMD 		1005
+#define WHILE_CMD 		1006
+#define VAL_DIGIT 		1007
+#define ID_VARIABLE 	1008
+#define LOOK_CMD_RET 	1009
+#define IF_CMD 			1010
+#define SETSTONE_CMD 	1011
 
-#define DIRECTION 1100
-#define WALL_TYPE 1101
+#define OP_EQ			1100
+#define OP_NE			1101
+#define OP_LT			1102
+#define OP_LE			1103
+#define OP_GT			1104
+#define OP_GE			1105
+#define OP_NOT			1106
+#define OP_AND			1107
+#define OP_OR			1108
+#define OP_UMINUS		1109
+#define OP_PLUS			1110
+#define OP_MINUS		1111
+#define DIRECTION 		1112
+#define WALL_TYPE 		1113
 
+/*
 #define RELATIVE_DIRECTION 200
 #define ABSOLUTE_DIRECTION 201
 #define DIRECTION 202
@@ -99,5 +102,5 @@ enum dir{
 #define IDENTIFIER 253
 #define DIGIT 254
 #define STRING 255
-
+*/
 #endif
