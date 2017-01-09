@@ -97,9 +97,6 @@ void yyerror(char *s);
 %type <pt>cmdBlock
 %type <pt>cmdSeq
 %type <pt>cmd
-%type <pt>loopBlock
-%type <pt>loopSeq
-%type <pt>loopCmd
 %type <pt>ret_cmd
 %type <pt>direction
 %type <pt>while_cmd
@@ -167,33 +164,6 @@ comments: 		COMMENT comments
 			  | COMMENT
 				{
 					//Do Nothing
-				};
-loopBlock:		BEGIN_BLOCK loopSeq END_BLOCK
-				{
-					$$ = $2;
-				};
-loopSeq:		cmd loopSeq
-				{
-					$1->nxt = $2;
-					$$ = $1;
-				}
-			  |	loopCmd loopSeq
-			    {
-					$1->nxt = $2;
-					$$=$1;
-				}
-			  | cmd
-				{
-					$$ = $1;
-				}
-			  | loopCmd
-				{
-					$$ = $1;
-				};
-loopCmd:		BREAK COMMANDEND
-				{
-					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
-					$$->type = BREAK_CMD;
 				};
 cmdBlock: 		BEGIN_BLOCK cmdSeq END_BLOCK
 				{

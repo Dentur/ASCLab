@@ -37,4 +37,4 @@ lex.yy.c
 *.app
 *.tab.c
 *.tab.h
-CPP-Project/*
+CPP-Files/*

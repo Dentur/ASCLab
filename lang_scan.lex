@@ -1,12 +1,16 @@
 %{
 //#include "myparser.h"
 #include "lang_parser.tab.h"
+
+int curCMD = 0;
+int startCMD = -1;
 %}
 
 /*
 ///////////////////////////////////////////////////////////////////////////
 // declarations section
 */
+%s LOOP
 %option yylineno
 
 /*
@@ -44,8 +48,16 @@ NOTEQUAL !=
 "MARK"					{ return MARK;}
 "STONE"					{ return STONE;}
 ";"						{ return COMMANDEND;}
-"{"						{ return BEGIN_BLOCK;}
-"}"						{ return END_BLOCK;}
+"{"						{ curCMD++; return BEGIN_BLOCK;}
+"}"						{ 
+							if(startCMD >= 0){
+								curCMD--;
+								if(curCMD == startCMD){
+									startCMD = -1;
+									BEGIN 0;
+								}
+							}
+							return END_BLOCK;}
 "("						{ return LEFTB;}
 ")"						{ return RIGHTB;}
 SINGLE_COMMENT			{ return COMMENT;}
@@ -86,11 +98,14 @@ GREATERTHAN				{ return GE;}
 "get_marker_count"		{ return MTOTAL;}
 "get_marker"			{ return MARKER;}
 "delete_marker"			{ return MDELETE;}
-"while"					{ return WHILE;}
+"while"					{ 
+							BEGIN LOOP;
+							return WHILE;
+						}
 "if"					{ return IF;}
 "else"					{ return ELSE;}
 "print"					{ return PRINT;}
-"break"					{ return BREAK;}
+<LOOP>"break"			{ return BREAK;}
 
 [a-zA-Z_][a-zA-Z0-9_]*	{
 						yylval.str = malloc( yyleng+1);

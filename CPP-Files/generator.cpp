@@ -101,7 +101,7 @@ void generate( PT_ENTRY *pentry) {
 
 			//Main function
 			fprintf(cfile, "int main() {\n");
-			fprintf(cfile, "Labyrinth lab = Labyrinth();\n");
+			fprintf(cfile, "Labyrinth lab();\n");
 			generate(pentry->op1);
 			for(PT_ENTRY* pt = pentry->op2; pt; pt = pt->nxt)
 				generate(pt);
