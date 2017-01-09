@@ -32,7 +32,6 @@ struct _Marker {
    int value;
    int x;
    int y;
-   _Marker *next;
 };
 
 class Labyrinth
@@ -45,11 +44,22 @@ public:
   void step(Direction dir);
   void turn(Direction dir);
   void setStone(Direction dir);
+  void setMarker(Direction dir, int value);
   void deleteMarker(Direction dir);
+  void teleport(int index);
   WallTypes look(Direction dir);
   Direction getViewDirection();
   int getXPos();
   int getYPos();
+  int getGoalXPos();
+  int getGoalYPos();
+  int getMarkerValue(int index);
+  int getMarkerValue(Direction dir);
+  int getMarkerTotalCount();
+  Direction getMarkerDirection(Direction dir);
+  //TODO Fehlende Befehle: 
+  void print(char* str);
+  //Prints Lab only!
   void print();
 private:
   Direction view;
@@ -58,16 +68,17 @@ private:
   int labHeight;
   int x;
   int y;
+  int goalX;
+  int goalY;
   vector<_Marker> marks;
   Direction getRealDirection(Direction dir);
   void moveDirection(Direction dir);
   WallTypes getWallType(Direction dir);
   void log(string text);
   char setChar(Direction dir, char c);
-  //Funktionen die noch implementiert werden müssen
+  int* getCoords(Direction dir);
   void removeMarkerFromVector(int index);
+  void addMarker(Direction dir, int x, int y, int val);
   int getMarkerIndexByCoords(int x, int y);
-  int getXPos(Direction dir);
-  int getYPos(Direction dir);
 };
 

@@ -85,7 +85,10 @@ bool isInHeap(char* identifier)
 }
 
 void createFile () {
-    cfile = fopen("C:\\Users\\Tim\\Desktop\\program.cpp", "w");
+    cfile = fopen("C:\\Users\\Tim\\Desktop\\FH\\Test\\program.cpp", "w");
+}
+void createFile (char* path) {
+    cfile = fopen(path, "w");
 }
 
 void closeFile () {
@@ -236,7 +239,30 @@ void generate( PT_ENTRY *pentry) {
 		case WALL_TYPE:
 			fprintf(cfile, "%s", getWall(pentry->num));
 			break;
+		case NEW_ASSIGN:
+			addToHeap(pentry->identifier);
+			switch(pentry->num){
+				case 0:
+					fprintf(cfile, "int %s;\n", pentry->identifier);
+					break;
+				case 1:
+					fprintf(cfile, "Direction %s;\n", pentry->identifier);
+					break;
+				case 2:
+					fprintf(cfile, "WallTypes %s;\n", pentry->identifier);
+					break;
+				case 3:
+					fprintf(cfile, "bool %s;\n", pentry->identifier);
+					break;
+			}
+			break;
 			
+		case ASSIGN:
+			fprintf(cfile, "%s=", pentry->identifier);
+			generate(pentry->op1);
+			fprintf(cfile, ";\n");
+			break;
+		
 		case VAL_DIGIT:
 			fprintf(cfile, "%d", pentry->num);
 			break;

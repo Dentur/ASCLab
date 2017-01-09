@@ -64,4 +64,6 @@ PT_ENTRY
 #define OP_MINUS		1111
 #define DIRECTION 		1112
 #define WALL_TYPE 		1113
+#define NEW_ASSIGN 		1114
+#define ASSIGN 			1115
 #endif

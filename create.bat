@@ -1,3 +1,4 @@
+cls
 flex lang_scan.lex
 bison -d lang_parser.y
 copy lang_parser.tab.c "CPP-Files"

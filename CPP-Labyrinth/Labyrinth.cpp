@@ -16,7 +16,8 @@ void Labyrinth::load(string File) {
    string line = "";
    int row = 0;
    ifstream _file(File);
-
+   _file >> labWidth >> labHeight;
+   /*
    while (getline(_file, line)) {
       row++;
       if (labWidth < line.length()) {
@@ -27,6 +28,7 @@ void Labyrinth::load(string File) {
    labHeight = row;
    row = 0;
    _file.seekg(0, ios::beg);
+   */
    _lab = (char*)calloc(labHeight*labWidth + 1, 1);
    while (getline(_file, line)) {
       int i = 0;
@@ -66,6 +68,9 @@ Direction Labyrinth::getRealDirection(Direction dir) {
    else if (dir == 7) {
       return Direction((view + 1) % 4);
    }
+   else if (dir == FLOOR) {
+      return FLOOR;
+   }
    return view;
 }
 
@@ -95,12 +100,15 @@ char Labyrinth::setChar(Direction dir, char c) {
       }
       _wall = &_lab[(y + 1)*labWidth + x];
    }
-   else /*if (dir == WEST)*/ {
+   else if (dir == WEST) {
       if (x == 0) {
          //TODO Log Error
          return c;
       }
       _wall = &_lab[y*labWidth + x - 1];
+   }
+   else {
+      _wall = &_lab[y*labWidth + x];
    }
    char ret = _wall[0];
    switch (_wall[0]) {
@@ -155,6 +163,9 @@ WallTypes Labyrinth::getWallType(Direction dir) {
       }
       _wall = _lab[y*labWidth + x - 1];
    }
+   else if (dir == FLOOR) {
+      _wall = _lab[y*labWidth + x];
+   }
    switch (_wall) {
       case '#':
          return Wall;
@@ -162,6 +173,8 @@ WallTypes Labyrinth::getWallType(Direction dir) {
          return Free;
       case '=':
          return Stone;
+      case 'm':
+         return Marker;
       case 'G':
          return Goal;
       case 'g':
@@ -194,6 +207,22 @@ void Labyrinth::moveDirection(Direction dir) {
       x--;
    }
 }
+
+int* Labyrinth::getCoords(Direction dir) {
+   dir = getRealDirection(dir);
+   switch (dir) {
+   case NORTH:
+      return new int[] { x, (y == 0?y:y-1) };
+   case EAST:
+      return new int[] { (x == (labWidth - 1)?x:x+1), y };
+   case SOUTH:
+      return new int[] { x, (y == (labHeight-1)?y:y+1) };
+   case WEST:
+      return new int[] { (x==0?x:x-1), y };
+   }
+   return new int[]{ x, y };
+}
+
 void Labyrinth::print() {
    for (int i = 0; i < labHeight; i++) {
       for (int j = 0; j < labWidth; j++) {
@@ -204,6 +233,9 @@ void Labyrinth::print() {
 }
 
 void Labyrinth::move(Direction dir) {
+   if (dir == FLOOR) {
+      return;
+   }
    view = getRealDirection(dir);
    moveDirection(view);
    //TODO Log to File
@@ -218,6 +250,9 @@ WallTypes Labyrinth::look(Direction dir) {
    return getWallType(dir);
 }
 void Labyrinth::step(Direction dir) {
+   if (dir == FLOOR) {
+      return;
+   }
    moveDirection(dir);
    //TODO Log to File
    string str = "step ";
@@ -226,6 +261,9 @@ void Labyrinth::step(Direction dir) {
 }
 
 void Labyrinth::turn(Direction dir) {
+   if (dir == FLOOR) {
+      return;
+   }
    view = getRealDirection(dir);
    string str = "turn ";
    str += (char)(view + 48);
@@ -233,16 +271,85 @@ void Labyrinth::turn(Direction dir) {
    //TODO Log to File
 }
 
+void Labyrinth::removeMarkerFromVector(int index) {
+   marks.erase(marks.begin() + index);
+}
+
+void Labyrinth::addMarker(Direction dir, int x, int y, int val) {
+   _Marker m = _Marker();
+   m.dir = dir;
+   m.x = x;
+   m.y = y;
+   m.value = val;
+   marks.push_back(m);
+}
+
+void Labyrinth::teleport(int index) {
+   if (index >= marks.size() || index < 0) {
+      return;
+   }
+   string str = "teleport ";
+   str += (char)(x);
+   str += " ";
+   str += (char)(y);
+   log(str);
+   x = marks[index].x;
+   y = marks[index].y;
+}
+int Labyrinth::getMarkerValue(int index) {
+   if (index >= marks.size() || index < 0) {
+      return NULL;
+   }
+   return marks[index].value;
+}
+int Labyrinth::getMarkerValue(Direction dir) {
+   int* coords = getCoords(dir);
+   return marks[getMarkerIndexByCoords(coords[0], coords[1])].value;
+}
+int Labyrinth::getMarkerTotalCount() {
+   return marks.size();
+}
+Direction Labyrinth::getMarkerDirection(Direction dir) {
+   int* coords = getCoords(dir);
+   return marks[getMarkerIndexByCoords(coords[0], coords[1])].dir;
+}
+
+
 void Labyrinth::setStone(Direction dir) {
-   char temp = setChar(dir, '=');
+   char old = setChar(dir, '=');
+   if (old == 'm') {
+      int* coords = getCoords(dir);
+      removeMarkerFromVector(getMarkerIndexByCoords(coords[0], coords[1]));
+   }
    string str = "sstone ";
+   str += (char)(getRealDirection(dir) + 48);
+   log(str);
+}
+
+int Labyrinth::getMarkerIndexByCoords(int x, int y) {
+   for (int i = 0; i < marks.size(); i++) {
+      if (marks[i].x == x && marks[i].y == y) {
+         return i;
+      }
+   }
+   return NULL;
+}
+
+void Labyrinth::setMarker(Direction dir, int value) {
+   char old = setChar(dir, 'm');
+   if (old != 'm') {
+      int* coords = getCoords(dir);
+      addMarker(dir, coords[0], coords[1], value);
+   }
+   string str = "smark ";
    str += (char)(getRealDirection(dir) + 48);
    log(str);
 }
 void Labyrinth::deleteMarker(Direction dir) {
    char old = setChar(dir, ' ');
    if (old == 'm') {
-      //TODO delete Marker from List
+      int* coords = getCoords(dir);
+      removeMarkerFromVector(getMarkerIndexByCoords(coords[0], coords[1]));
    }
    string str = "dmarker ";
    str += (char)(getRealDirection(dir) + 48);
@@ -253,6 +360,13 @@ int Labyrinth::getXPos() {
 }
 int Labyrinth::getYPos() {
    return y;
+}
+
+int Labyrinth::getGoalXPos() {
+   return goalX;
+}
+int Labyrinth::getGoalYPos() {
+   return goalY;
 }
 
 void Labyrinth::log(string text) {

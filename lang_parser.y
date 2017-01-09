@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 void yyerror(char *s);    
+void addToHeap(char* identifier, int type);
+int isInHeap(char* identifier);
 %}
 
 /////////////////////////////////////////////////////////////////////////////
@@ -50,7 +52,6 @@ void yyerror(char *s);
 %token WHILE
 %token IF
 %token ELSE
-%token IDENTIFIER
 %token BREAK
 
 //COMMAND HELPER
@@ -80,7 +81,7 @@ void yyerror(char *s);
 
 //VALUE TOKEN
 %token <str>STRING
-%token <str>VARIABLE
+%token <str>IDENTIFIER
 %token <num>DIGIT
 
 //OPERATION TOKEN
@@ -97,11 +98,13 @@ void yyerror(char *s);
 %type <pt>cmdBlock
 %type <pt>cmdSeq
 %type <pt>cmd
-%type <pt>ret_cmd
+%type <pt>ret_dir_cmd
+%type <pt>ret_int_cmd
+%type <pt>ret_wall_cmd
 %type <pt>direction
 %type <pt>while_cmd
 %type <pt>if_cmd
-//%type <pt>assignment
+%type <pt>assignment
 %type <pt>arith_expr
 %type <pt>rel_expr
 %type <pt>bool_expr
@@ -177,7 +180,11 @@ cmdSeq:			cmd cmdSeq
 			  | cmd
 			    {
 					$$ = $1;
-			    };
+			    }
+			  | comments cmdSeq
+				{
+					$$=$2;
+				};
 ret_wall_cmd:	LOOK direction
 				{
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
@@ -277,31 +284,31 @@ cmd:			TURN direction COMMANDEND
 					$1->type = LOOK_CMD;
 					$$ = $1;
 				}
-			  | ret_dir_cmd_cmd COMMANDEND
+			  | ret_dir_cmd COMMANDEND
 				{
 					$1->type = GDIR_CMD;
 					$$ = $1;
 				}
-			  | ret_int_cmd_cmd COMMANDEND
+			  | ret_int_cmd COMMANDEND
 				{
 					switch($1->type){
 						case MTOTAL_CMD_RET:
-							$1-type = MTOTAL_CMD;
+							$1->type = MTOTAL_CMD;
 							break;
 						case POSX_CMD_RET:
-							$1-type = POSX_CMD;
+							$1->type = POSX_CMD;
 							break;
 						case POSY_CMD_RET:
-							$1-type = POSY_CMD;
+							$1->type = POSY_CMD;
 							break;
 						case GOALX_CMD_RET:
-							$1-type = GOALX_CMD;
+							$1->type = GOALX_CMD;
 							break;
 						case GOALY_CMD_RET:
-							$1-type = GOALY_CMD;
+							$1->type = GOALY_CMD;
 							break;
 						case MVAL_CMD_RET:
-							$1-type = MVAL_CMD;
+							$1->type = MVAL_CMD;
 							break;
 					}
 					$$ = $1;
@@ -316,6 +323,170 @@ cmd:			TURN direction COMMANDEND
 				{
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = BREAK_CMD;
+				}
+			  | assignment
+			    {
+					$$ = $1;
+				};
+assignment:		INT_VAR IDENTIFIER COMMANDEND
+				{
+					if(isInHeap($2) != -1){
+						yyerror("Variable is already declared!");
+						return;
+					}
+					addToHeap($2, 0);
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = NEW_ASSIGN;
+					$$->num = 0;
+					$$->identifier = $2;
+				}
+			  | IDENTIFIER ASGN arith_expr COMMANDEND
+			    {
+					int hType = isInHeap($1);
+					if(hType == -1){
+						yyerror("Variable is not declared!");
+						return;
+					} else if(hType != 0){
+						yyerror("The desired Variable isn't of type \"int\"!");
+						return;
+					}
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = ASSIGN;
+					$$->identifier = $1;
+					$$->num = 0;
+					$$->op1 = $3;
+				}
+			  | IDENTIFIER ASGN ret_int_cmd COMMANDEND
+			    {
+					int hType = isInHeap($1);
+					if(hType == -1){
+						yyerror("Variable is not declared!");
+						return;
+					} else if(hType != 0){
+						yyerror("The desired Variable isn't of type \"int\"!");
+						return;
+					}
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = ASSIGN;
+					$$->identifier = $1;
+					$$->num = 0;
+					$$->op1 = $3;
+				}
+			  | DIR_VAR IDENTIFIER COMMANDEND
+			    {
+					if(isInHeap($2) != -1){
+						yyerror("Variable is already declared!");
+						return;
+					}
+					addToHeap($2, 1);
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = NEW_ASSIGN;
+					$$->num = 1;
+					$$->identifier = $2;
+				}
+			  | IDENTIFIER ASGN direction COMMANDEND
+			    {
+					int hType = isInHeap($1);
+					if(hType == -1){
+						yyerror("Variable is not declared!");
+						return;
+					} else if(hType != 1){
+						yyerror("The desired Variable isn't of type \"direction\"!");
+						return;
+					}
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = ASSIGN;
+					$$->identifier = $1;
+					$$->num = 1;
+					$$->op1 = $3;
+				}
+			  | IDENTIFIER ASGN ret_dir_cmd COMMANDEND
+			    {
+					int hType = isInHeap($1);
+					if(hType == -1){
+						yyerror("Variable is not declared!");
+						return;
+					} else if(hType != 1){
+						yyerror("The desired Variable isn't of type \"direction\"!");
+						return;
+					}
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = ASSIGN;
+					$$->identifier = $1;
+					$$->num = 1;
+					$$->op1 = $3;
+				}
+			  | BOOL_VAR IDENTIFIER COMMANDEND
+			    {
+					if(isInHeap($2) != -1){
+						yyerror("Variable is already declared!");
+						return;
+					}
+					addToHeap($2, 2);
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = NEW_ASSIGN;
+					$$->num = 2;
+					$$->identifier = $2;
+				}
+			  | IDENTIFIER ASGN bool_expr COMMANDEND
+			    {
+					int hType = isInHeap($1);
+					if(hType == -1){
+						yyerror("Variable is not declared!");
+						return;
+					} else if(hType != 2){
+						yyerror("The desired Variable isn't of type \"bool\"!");
+						return;
+					}
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = ASSIGN;
+					$$->identifier = $1;
+					$$->num = 2;
+					$$->op1 = $3;
+				}
+			  | WALL_VAR IDENTIFIER COMMANDEND
+			    {
+					if(isInHeap($2) != -1){
+						yyerror("Variable is already declared!");
+						return;
+					}
+					addToHeap($2, 3);
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = NEW_ASSIGN;
+					$$->num = 3;
+					$$->identifier = $2;
+				}
+			  | IDENTIFIER ASGN ret_wall_cmd COMMANDEND
+			    {
+					int hType = isInHeap($1);
+					if(hType == -1){
+						yyerror("Variable is not declared!");
+						return;
+					} else if(hType != 3){
+						yyerror("The desired Variable isn't of type \"wall\"!");
+						return;
+					}
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = ASSIGN;
+					$$->identifier = $1;
+					$$->num = 3;
+					$$->op1 = $3;
+				}
+			  | IDENTIFIER ASGN wall COMMANDEND
+			    {
+					int hType = isInHeap($1);
+					if(hType == -1){
+						yyerror("Variable is not declared!");
+						return;
+					} else if(hType != 3){
+						yyerror("The desired Variable isn't of type \"wall\"!");
+						return;
+					}
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = ASSIGN;
+					$$->identifier = $1;
+					$$->num = 3;
+					$$->op1 = $3;
 				};
 if_cmd	:		IF bool_expr cmdBlock
 				{
@@ -345,7 +516,7 @@ arith_expr :	DIGIT
 					$$->type = VAL_DIGIT;
 					$$->num = $1;
 				}
-			|	VARIABLE
+			|	IDENTIFIER
 				{
 					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
 					$$->type = ID_VARIABLE;
@@ -579,6 +750,41 @@ direction:		NORTH
 
 extern FILE *yyin;
 extern FILE *yyout;
+struct list {
+	char* identifier;
+	int type;
+	struct list* next; 
+};
+
+struct list* myHeap;
+void addToHeap(char* identifier, int type)
+{
+	if(myHeap == NULL) {
+		myHeap =  (struct list*)calloc( 1, sizeof(struct list*));
+		myHeap->identifier = (char*) malloc(strlen(identifier) + 1);
+		strcpy(myHeap->identifier, identifier);
+		myHeap->type = type;
+		myHeap->next = 0;
+	} else {
+		struct list* node = myHeap->next;
+		for (; node; node = node->next) {};
+		myHeap->identifier = (char*) malloc(strlen(identifier) + 1);
+		strcpy(myHeap->identifier, identifier);
+		myHeap->type = type;
+		myHeap->next = 0;
+	}
+}
+
+int isInHeap(char* identifier)
+{
+	struct list* node = myHeap;
+	for(; node; node = node->next) {
+		if (strcmp(identifier,node->identifier) == 0) {
+			return node->type;
+		}
+	}
+	return -1;
+}
 
 int main(int argc, char *argv[])
 {
