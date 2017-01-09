@@ -1,0 +1,70 @@
+load C:\Users\Sebastian V\Documents\ASCLab\Programme\as.txt
+{
+int eins;
+int zwei;
+int drei;
+
+direction dEins;
+direction dZwei;
+direction dDrei;
+
+bool bEins;
+bool bZwei;
+bool bDrei;
+
+wall wEins;
+wall wZwei;
+wall wDrei;
+
+//Move
+move NORTH;
+move WEST;
+move EAST;
+move SOUTH;
+
+dEins = NORTH;
+dZwei = SOUTH;
+move dEins;
+move dZwei;
+
+//Step
+step SOUTH;
+step NORTH;
+step EAST;
+step WEST;
+step dEins;
+step dZwei;
+
+//Look
+look NORTH;
+look WEST;
+look EAST;
+look SOUTH;
+look THIS;
+dDrei = THIS;
+wEins = look dDrei;
+
+//
+int i;
+i = position_x;
+i = position_Y;
+i = goal_x;
+i = goal_y;
+
+//Marker
+set_marker NORTH NORTH (1+2+3+4+5+6+6+7+8+9);
+eins = get_marker_count;
+teleport eins-1;
+zwei = get_marker eins-eins;
+dZwei = THIS;
+zwei = marker_value THIS;
+zwei = marker_value dZwei;
+dDrei = marker_direction THIS;
+dDrei = marker_direction dZwei;
+delete_marker dZwei;
+set_stone THIS;
+set_stone dZwei;
+delete_marker THIS;
+
+
+}
