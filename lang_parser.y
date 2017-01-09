@@ -17,18 +17,7 @@ void yyerror(char *s);
 
 //UNUSED TOKENS
 %token PRINT
-%token MDELETE
 %token MARKER
-%token MTOTAL
-%token GOALX
-%token GOALY
-%token POSX
-%token POSY
-%token GDIR
-%token MDIR
-%token MVAL
-%token SMARK
-%token TELEPORT
 %token WALL_VAR
 %token DIR_VAR
 %token BOOL_VAR
@@ -41,6 +30,17 @@ void yyerror(char *s);
 
 //COMMAND TOKENS
 %token COMMENT
+%token MDELETE
+%token MTOTAL
+%token GOALX
+%token GOALY
+%token POSX
+%token POSY
+%token GDIR
+%token MDIR
+%token MVAL
+%token SMARK
+%token TELEPORT
 %token LOAD
 %token LOOK
 %token MOVE
@@ -178,10 +178,52 @@ cmdSeq:			cmd cmdSeq
 			    {
 					$$ = $1;
 			    };
-ret_cmd:		LOOK direction
+ret_wall_cmd:	LOOK direction
 				{
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = LOOK_CMD_RET;
+					$$->op1 = $2;
+				};
+ret_dir_cmd:	GDIR
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = GDIR_CMD_RET;
+				}
+			  | MDIR direction
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = MDIR_CMD_RET;
+					$$->op1 = $2;
+				};
+ret_int_cmd:	MTOTAL
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = MTOTAL_CMD_RET;
+				}
+			  | POSX
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = POSX_CMD_RET;
+				}
+			  | POSY
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = POSY_CMD_RET;
+				}
+			  | GOALX
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = GOALX_CMD_RET;
+				}
+			  | GOALY
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = GOALY_CMD_RET;
+				}
+			  | MVAL direction
+			    {
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = MVAL_CMD_RET;
 					$$->op1 = $2;
 				};
 cmd:			TURN direction COMMANDEND
@@ -208,6 +250,20 @@ cmd:			TURN direction COMMANDEND
 					$$->type = SETSTONE_CMD;
 					$$->op1 = $2;
 				}
+			  | SMARK direction direction DIGIT COMMANDEND
+			    {
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = SETMARK_CMD;
+					$$->op1 = $2;
+					$$->op2 = $3;
+					$$->num = $4;
+				}
+			  | TELEPORT DIGIT
+			    {
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = TELEPORT_CMD;
+					$$->num = $2;
+				}
 			  | while_cmd
 			    {
 					$$ = $1;
@@ -216,12 +272,45 @@ cmd:			TURN direction COMMANDEND
 				{
 					$$ = $1;
 				}
-			  | ret_cmd COMMANDEND
+			  | ret_wall_cmd COMMANDEND
 				{
-					if($1->type == LOOK_CMD_RET){
-						$1->type = LOOK_CMD;
+					$1->type = LOOK_CMD;
+					$$ = $1;
+				}
+			  | ret_dir_cmd_cmd COMMANDEND
+				{
+					$1->type = GDIR_CMD;
+					$$ = $1;
+				}
+			  | ret_int_cmd_cmd COMMANDEND
+				{
+					switch($1->type){
+						case MTOTAL_CMD_RET:
+							$1-type = MTOTAL_CMD;
+							break;
+						case POSX_CMD_RET:
+							$1-type = POSX_CMD;
+							break;
+						case POSY_CMD_RET:
+							$1-type = POSY_CMD;
+							break;
+						case GOALX_CMD_RET:
+							$1-type = GOALX_CMD;
+							break;
+						case GOALY_CMD_RET:
+							$1-type = GOALY_CMD;
+							break;
+						case MVAL_CMD_RET:
+							$1-type = MVAL_CMD;
+							break;
 					}
 					$$ = $1;
+				}
+			  | MDELETE direction
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = MDELETE_CMD;
+					$$->op1 = $2;
 				}
 			  | BREAK COMMANDEND
 				{
@@ -381,14 +470,14 @@ bool_expr	:	rel_expr
 					$$->op1 = $1;
 					$$->op2 = $3;
 				}
-			|   ret_cmd EQ wall
+			|   ret_wall_cmd EQ wall
 				{
 					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
 					$$->type = OP_EQ;
 					$$->op1 = $1;
 					$$->op2 = $3;
 				}
-			|   ret_cmd NE wall
+			|   ret_wall_cmd NE wall
 				{
 					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
 					$$->type = OP_NE;
@@ -476,7 +565,13 @@ direction:		NORTH
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = DIRECTION;
 					$$->num = 7;
-			    };
+			    }
+			  | FLOOR
+			    {
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = DIRECTION;
+					$$->num = 8;
+				};
 %%
 
 /////////////////////////////////////////////////////////////////////////////
