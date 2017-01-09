@@ -25,7 +25,7 @@ PT_ENTRY
 #define LOOK_CMD 		1005
 #define WHILE_CMD 		1006
 #define VAL_DIGIT 		1007
-#define ID_VARIABLE 	1008
+#define USE_VARIABLE 	1008
 #define LOOK_CMD_RET 	1009
 #define IF_CMD 			1010
 #define SETSTONE_CMD 	1011
@@ -49,6 +49,8 @@ PT_ENTRY
 #define MDIR_CMD 		1029
 #define MDIR_CMD_RET 	1030
 #define TELEPORT_CMD 	1031
+#define MARKER_CMD 		1032
+#define MARKER_CMD_RET 	1033
 
 #define OP_EQ			1100
 #define OP_NE			1101

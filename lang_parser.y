@@ -4,7 +4,7 @@
 #include "generator.h"
 #include <stdio.h>
 #include <stdlib.h>
-void yyerror(char *s);    
+void yyerror(char *s);  
 void addToHeap(char* identifier, int type);
 int isInHeap(char* identifier);
 %}
@@ -18,19 +18,19 @@ int isInHeap(char* identifier);
 }
 
 //UNUSED TOKENS
+%token CONCAT
+%token FALSE
+%token TRUE
+
+//COMMAND TOKENS
 %token PRINT
 %token MARKER
 %token WALL_VAR
 %token DIR_VAR
 %token BOOL_VAR
 %token INT_VAR
-%token CONCAT
 %token ASGN
-%token FALSE
-%token TRUE
 %token FLOOR
-
-//COMMAND TOKENS
 %token COMMENT
 %token MDELETE
 %token MTOTAL
@@ -232,6 +232,12 @@ ret_int_cmd:	MTOTAL
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = MVAL_CMD_RET;
 					$$->op1 = $2;
+				}
+			  | MARKER arith_expr
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = MARKER_CMD_RET;
+					$$->op1 = $2;
 				};
 cmd:			TURN direction COMMANDEND
 				{
@@ -257,19 +263,19 @@ cmd:			TURN direction COMMANDEND
 					$$->type = SETSTONE_CMD;
 					$$->op1 = $2;
 				}
-			  | SMARK direction direction DIGIT COMMANDEND
+			  | SMARK direction direction arith_expr COMMANDEND
 			    {
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = SETMARK_CMD;
 					$$->op1 = $2;
 					$$->op2 = $3;
-					$$->num = $4;
+					$$->op3 = $4;
 				}
-			  | TELEPORT DIGIT
+			  | TELEPORT arith_expr COMMANDEND
 			    {
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = TELEPORT_CMD;
-					$$->num = $2;
+					$$->op1 = $2;
 				}
 			  | while_cmd
 			    {
@@ -310,10 +316,13 @@ cmd:			TURN direction COMMANDEND
 						case MVAL_CMD_RET:
 							$1->type = MVAL_CMD;
 							break;
+						case MARKER_CMD_RET:
+							$1->type = MARKER_CMD;
+							break;
 					}
 					$$ = $1;
 				}
-			  | MDELETE direction
+			  | MDELETE direction COMMANDEND
 				{
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = MDELETE_CMD;
@@ -518,8 +527,16 @@ arith_expr :	DIGIT
 				}
 			|	IDENTIFIER
 				{
-					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
-					$$->type = ID_VARIABLE;
+					int hType = isInHeap($1);
+					if(hType == -1){
+						yyerror("Variable is not declared!");
+						return;
+					} else if(hType != 0){
+						yyerror("The desired Variable isn't of type \"int\"!");
+						return;
+					}
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = USE_VARIABLE;
 					$$->identifier = $1;
 				}
 			|	MINUS arith_expr
@@ -658,6 +675,20 @@ bool_expr	:	rel_expr
 			|	LEFTB bool_expr RIGHTB
 				{
 					$$ = $2;
+				}
+			| 	IDENTIFIER
+				{
+					int hType = isInHeap($1);
+					if(hType == -1){
+						yyerror("Variable is not declared!");
+						return;
+					} else if(hType != 2){
+						yyerror("The desired Variable isn't of type \"bool\"!");
+						return;
+					}
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = USE_VARIABLE;
+					$$->identifier = $1;
 				};	
 wall:			FREE
 				{
@@ -688,7 +719,21 @@ wall:			FREE
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = WALL_TYPE;
 					$$->num = 4;
-			    };
+			    }
+			  | IDENTIFIER
+				{
+					int hType = isInHeap($1);
+					if(hType == -1){
+						yyerror("Variable is not declared!");
+						return;
+					} else if(hType != 3){
+						yyerror("The desired Variable isn't of type \"wall\"!");
+						return;
+					}
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = USE_VARIABLE;
+					$$->identifier = $1;
+				};
 direction:		NORTH
 				{
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
@@ -742,6 +787,20 @@ direction:		NORTH
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = DIRECTION;
 					$$->num = 8;
+				}
+			  | IDENTIFIER
+				{
+					int hType = isInHeap($1);
+					if(hType == -1){
+						yyerror("Variable is not declared!");
+						return;
+					} else if(hType != 1){
+						yyerror("The desired Variable isn't of type \"direction\"!");
+						return;
+					}
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = USE_VARIABLE;
+					$$->identifier = $1;
 				};
 %%
 
@@ -766,12 +825,12 @@ void addToHeap(char* identifier, int type)
 		myHeap->type = type;
 		myHeap->next = 0;
 	} else {
-		struct list* node = myHeap->next;
-		for (; node; node = node->next) {};
-		myHeap->identifier = (char*) malloc(strlen(identifier) + 1);
-		strcpy(myHeap->identifier, identifier);
-		myHeap->type = type;
-		myHeap->next = 0;
+		struct list* _new = (struct list*)calloc(1, sizeof(struct list*));
+		_new->identifier = (char*)malloc(strlen(identifier) + 1);
+		strcpy(_new->identifier, identifier);
+		_new->type = type;
+		_new->next = myHeap;
+		myHeap = _new;
 	}
 }
 
@@ -792,7 +851,7 @@ int main(int argc, char *argv[])
 	if( argc > 1)
 		yyin = fopen( argv[2], "r");
 	else
-		yyin = fopen("C:\\Users\\Tim\\Desktop\\FH\\ASC\\Project\\Testfiles\\testProg.txt", "r");
+		yyin = fopen("C:\\Users\\Tim\\Desktop\\FH\\ASC\\Project\\Programme\\testAllCommands.txt", "r");
 	yyparse();
 }
 

@@ -44,7 +44,7 @@ public:
   void step(Direction dir);
   void turn(Direction dir);
   void setStone(Direction dir);
-  void setMarker(Direction dir, int value);
+  void setMarker(Direction placeDir, Direction dir, int value);
   void deleteMarker(Direction dir);
   void teleport(int index);
   WallTypes look(Direction dir);

@@ -124,7 +124,7 @@ SINGLE_COMMENT			{ return COMMENT;}
 
 void yyerror (char const *s)
 {
-  fprintf (stderr, "Line %d: %s at %s",yylineno, s, yytext);
+  fprintf (stderr, "Line %d: %s at %s\n",yylineno, s, yytext);
 }
 
 yywrap() {

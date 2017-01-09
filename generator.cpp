@@ -31,6 +31,8 @@ char* getDirection(int num) {
 		  return "BACK";
 		case 7:
 		  return "RIGHT";
+		case 8:
+		  return "FLOOR";
 	}
 }
 
@@ -124,7 +126,11 @@ void generate( PT_ENTRY *pentry) {
 		case MOVE_CMD :
 			fprintf(cfile, "lab.move(%s);\n", getDirection(pentry->op1->num));
 			break;
-
+		case TELEPORT_CMD:
+			fprintf(cfile, "lab.teleport(");
+			generate(pentry->op1);
+			fprintf(cfile, ");\n");
+			break;
 		case STEP_CMD :
 			fprintf(cfile, "lab.step(%s);\n", getDirection(pentry->op1->num));
 			break;
@@ -231,13 +237,91 @@ void generate( PT_ENTRY *pentry) {
 			fprintf(cfile, " - ");
 			generate(pentry->op2);
 			break;
-			
 		case DIRECTION:
 			fprintf(cfile, "%s", getDirection(pentry->num));
 			break;
-			
 		case WALL_TYPE:
 			fprintf(cfile, "%s", getWall(pentry->num));
+			break;
+		case GOALX_CMD:
+			fprintf(cfile, "lab.getGoalXPos();\n");
+			break;
+		case GOALX_CMD_RET:
+			fprintf(cfile, "lab.getGoalXPos()");
+			break;
+		case GOALY_CMD:
+			fprintf(cfile, "lab.getGoalYPos();\n");
+			break;
+		case GOALY_CMD_RET:
+			fprintf(cfile, "lab.getGoalYPos()");
+			break;
+		case POSX_CMD:
+			fprintf(cfile, "lab.getXPos();\n");
+			break;
+		case POSX_CMD_RET:
+			fprintf(cfile, "lab.getXPos()");
+			break;
+		case POSY_CMD:
+			fprintf(cfile, "lab.getYPos();\n");
+			break;
+		case POSY_CMD_RET:
+			fprintf(cfile, "lab.getYPos()");
+			break;
+		case MTOTAL_CMD:
+			fprintf(cfile, "lab.getMarkerTotalCount();\n");
+			break;
+		case MTOTAL_CMD_RET:
+			fprintf(cfile, "lab.getMarkerTotalCount()");
+			break;
+		case GDIR_CMD:
+			fprintf(cfile, "lab.getViewDirection();\n");
+			break;
+		case GDIR_CMD_RET:
+			fprintf(cfile, "lab.getViewDirection()");
+			break;
+		case MVAL_CMD:
+			fprintf(cfile, "lab.getMarkerValue(");
+			generate(pentry->op1);
+			fprintf(cfile, ");\n");
+			break;
+		case MVAL_CMD_RET:
+			fprintf(cfile, "lab.getMarkerValue(");
+			generate(pentry->op1);
+			fprintf(cfile, ")");
+			break;
+		case MARKER_CMD:
+			fprintf(cfile, "lab.getMarkerValue(");
+			generate(pentry->op1);
+			fprintf(cfile, ");\n");
+			break;
+		case MARKER_CMD_RET:
+			fprintf(cfile, "lab.getMarkerValue(");
+			generate(pentry->op1);
+			fprintf(cfile, ")");
+			break;
+		case MDIR_CMD:
+			fprintf(cfile, "lab.getMarkerDirection(");
+			generate(pentry->op1);
+			fprintf(cfile, ");\n");
+			break;
+		case MDIR_CMD_RET:
+			fprintf(cfile, "lab.getMarkerDirection(");
+			generate(pentry->op1);
+			fprintf(cfile, ")");
+			break;
+		case MDELETE_CMD:
+			fprintf(cfile, "lab.deleteMarker(");
+			generate(pentry->op1);
+			fprintf(cfile, ");\n");
+			break;
+		case SETMARK_CMD:
+			fprintf(cfile, "lab.setMarker(");
+			generate(pentry->op1);
+			fprintf(cfile, ", ");
+			generate(pentry->op2);
+			fprintf(cfile, ", ");
+			generate(pentry->op3);
+			fprintf(cfile, ");\n");
 			break;
 		case NEW_ASSIGN:
 			addToHeap(pentry->identifier);
@@ -267,7 +351,7 @@ void generate( PT_ENTRY *pentry) {
 			fprintf(cfile, "%d", pentry->num);
 			break;
 			
-		case ID_VARIABLE :
+		case USE_VARIABLE:
 			fprintf(cfile, "%s", pentry->identifier);
 			break;
 	}

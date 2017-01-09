@@ -335,8 +335,8 @@ int Labyrinth::getMarkerIndexByCoords(int x, int y) {
    return NULL;
 }
 
-void Labyrinth::setMarker(Direction dir, int value) {
-   char old = setChar(dir, 'm');
+void Labyrinth::setMarker(Direction placeDir, Direction dir, int value) {
+   char old = setChar(placeDir, 'm');
    if (old != 'm') {
       int* coords = getCoords(dir);
       addMarker(dir, coords[0], coords[1], value);
