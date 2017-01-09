@@ -19,16 +19,6 @@ int startCMD = -1;
 SINGLE_COMMENT //[^\n]*\n
 
 /*
-//--Vergleichs_Operationen--
-*/
-LESSTHAN <=
-LESS <
-GREATERTHAN >=
-GREATER >
-EQUAL ==
-NOTEQUAL !=
-
-/*
 // place any declarations here
 */
 
@@ -65,10 +55,10 @@ SINGLE_COMMENT			{ return COMMENT;}
 "false"					{ return FALSE;}
 "=="					{ return EQ;}
 "!="					{ return NE;}
-LESS					{ return LT;}
-LESSTHAN				{ return LE;}
-GREATER					{ return GT;}
-GREATERTHAN				{ return GE;}
+"<"						{ return LT;}
+"<="					{ return LE;}
+">"						{ return GT;}
+">="					{ return GE;}
 "="						{ return ASGN;}
 "+"						{ return PLUS;}
 "-"						{ return MINUS;}
