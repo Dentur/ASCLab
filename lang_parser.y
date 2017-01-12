@@ -31,7 +31,6 @@ int isInHeap(char* identifier);
 %token INT_VAR
 %token ASGN
 %token FLOOR
-%token COMMENT
 %token MDELETE
 %token MTOTAL
 %token GOALX
@@ -81,6 +80,7 @@ int isInHeap(char* identifier);
 
 //VALUE TOKEN
 %token <str>STRING
+%token COMMENT
 %token <str>IDENTIFIER
 %token <num>DIGIT
 
@@ -121,12 +121,12 @@ int isInHeap(char* identifier);
 
 // place your YACC rules here (there must be at least one)
 
-program: 		comments loadLab comments cmdBlock comments
+program: 		comments loadLab cmdBlock
 				{
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = PROGRAM;
 					$$->op1 = $2;
-					$$->op2 = $4;
+					$$->op2 = $3;
 					createFile();
 					generate($$);
 					closeFile();
@@ -142,17 +142,6 @@ program: 		comments loadLab comments cmdBlock comments
 					generate($$);
 					closeFile();
 					//TODO GENERATE C-FILE
-				}
-			  | comments loadLab cmdBlock
-				{
-					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
-					$$->type = PROGRAM;
-					$$->op1 = $2;
-					$$->op2 = $3;
-					createFile();
-					generate($$);
-					closeFile();
-					//TODO GENERATE C-FILE
 				};
 loadLab: 		LOAD STRING COMMANDEND
 				{
@@ -162,11 +151,11 @@ loadLab: 		LOAD STRING COMMANDEND
 				};
 comments: 		COMMENT comments
 				{
-					//Do Nothing
+					
 				}
 			  | COMMENT
 				{
-					//Do Nothing
+					
 				};
 cmdBlock: 		BEGIN_BLOCK cmdSeq END_BLOCK
 				{
@@ -180,11 +169,7 @@ cmdSeq:			cmd cmdSeq
 			  | cmd
 			    {
 					$$ = $1;
-			    }
-			  | comments cmdSeq
-				{
-					$$=$2;
-				};
+			    };
 ret_wall_cmd:	LOOK direction
 				{
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
@@ -245,6 +230,10 @@ cmd:			TURN direction COMMANDEND
 					$$->type = TURN_CMD;
 					$$->op1 = $2;
 				}
+			  | COMMENT
+				{
+					//
+				}
 			  | MOVE direction COMMANDEND
 				{
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
@@ -276,6 +265,12 @@ cmd:			TURN direction COMMANDEND
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = TELEPORT_CMD;
 					$$->op1 = $2;
+				}
+			  | PRINT STRING COMMANDEND
+				{
+					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
+					$$->type = PRINT_CMD;
+					$$->str = $2;
 				}
 			  | while_cmd
 			    {
@@ -538,6 +533,10 @@ arith_expr :	DIGIT
 					$$ = (PT_ENTRY*) calloc(1, sizeof(PT_ENTRY));
 					$$->type = USE_VARIABLE;
 					$$->identifier = $1;
+				}
+			|	ret_int_cmd
+				{
+					$$ = $1;
 				}
 			|	MINUS arith_expr
 				{
@@ -849,9 +848,9 @@ int main(int argc, char *argv[])
 {
 	yyout = stdout;
 	if( argc > 1)
-		yyin = fopen( argv[2], "r");
+		yyin = fopen( argv[1], "r");
 	else
-		yyin = fopen("C:\\Users\\Tim\\Desktop\\FH\\ASC\\Project\\Programme\\testAllCommands.txt", "r");
+		yyin = fopen(stdin, "r");
 	yyparse();
 }
 

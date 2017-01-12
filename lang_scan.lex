@@ -14,11 +14,6 @@ int startCMD = -1;
 %option yylineno
 
 /*
-//--Syntaxmakierungen--
-*/
-SINGLE_COMMENT //[^\n]*\n
-
-/*
 // place any declarations here
 */
 
@@ -50,7 +45,6 @@ SINGLE_COMMENT //[^\n]*\n
 							return END_BLOCK;}
 "("						{ return LEFTB;}
 ")"						{ return RIGHTB;}
-SINGLE_COMMENT			{ return COMMENT;}
 "true"					{ return TRUE;}
 "false"					{ return FALSE;}
 "=="					{ return EQ;}
@@ -96,13 +90,16 @@ SINGLE_COMMENT			{ return COMMENT;}
 "else"					{ return ELSE;}
 "print"					{ return PRINT;}
 <LOOP>"break"			{ return BREAK;}
-
+"//"[^~]* 				{ 
+						yylval.str = malloc( yyleng+1);
+						strcpy( yylval.str, yytext);
+						return COMMENT; }
 [a-zA-Z_][a-zA-Z0-9_]*	{
 						yylval.str = malloc( yyleng+1);
 						strcpy( yylval.str, yytext);
 						return IDENTIFIER;
 						}
-[1-9][0-9]*				{
+[0-9][0-9]*				{
 						yylval.num = (int) atoi(yytext);
 						return DIGIT;
 						}

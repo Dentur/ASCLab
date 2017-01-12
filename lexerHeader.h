@@ -51,6 +51,8 @@ PT_ENTRY
 #define TELEPORT_CMD 	1031
 #define MARKER_CMD 		1032
 #define MARKER_CMD_RET 	1033
+#define PRINT_CMD 		1034
+//#define SINGLECOMMENT 	1035
 
 #define OP_EQ			1100
 #define OP_NE			1101

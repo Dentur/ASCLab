@@ -210,17 +210,36 @@ void Labyrinth::moveDirection(Direction dir) {
 
 int* Labyrinth::getCoords(Direction dir) {
    dir = getRealDirection(dir);
+   int coord[2];
+   coord[0] = x;
+   coord[1] = y;
    switch (dir) {
    case NORTH:
-      return new int[] { x, (y == 0?y:y-1) };
+      if (y == 0) {
+         return coord;
+      }
+      coord[1]--;
+      break;
    case EAST:
-      return new int[] { (x == (labWidth - 1)?x:x+1), y };
+      if (x == (labWidth - 1)) {
+         return coord;
+      }
+      coord[0]++;
+      break;
    case SOUTH:
-      return new int[] { x, (y == (labHeight-1)?y:y+1) };
+      if (y == (labHeight - 1)) {
+         return coord;
+      }
+      coord[1]++;
+      break;
    case WEST:
-      return new int[] { (x==0?x:x-1), y };
+      if (x == 0) {
+         return coord;
+      }
+      coord[0]--;
+      break;
    }
-   return new int[]{ x, y };
+   return coord;
 }
 
 void Labyrinth::print() {
@@ -253,6 +272,7 @@ void Labyrinth::step(Direction dir) {
    if (dir == FLOOR) {
       return;
    }
+
    moveDirection(dir);
    //TODO Log to File
    string str = "step ";
@@ -338,7 +358,14 @@ int Labyrinth::getMarkerIndexByCoords(int x, int y) {
 void Labyrinth::setMarker(Direction placeDir, Direction dir, int value) {
    char old = setChar(placeDir, 'm');
    if (old != 'm') {
-      int* coords = getCoords(dir);
+      int* coords = getCoords(placeDir);
+      if (coords[1] == 3) {
+         int k = 0;
+         k++;
+         k++;
+         k++;
+         k++;
+      }
       addMarker(dir, coords[0], coords[1], value);
    }
    string str = "smark ";
