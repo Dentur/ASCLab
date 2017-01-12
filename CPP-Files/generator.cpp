@@ -3,6 +3,8 @@
 #include <cstring>
 #include <string>
 #include "generator.h"
+#include <Windows.h>
+#include <WinBase.h>
 
 using namespace std;
 
@@ -93,8 +95,38 @@ void createFile (char* path) {
     cfile = fopen(path, "w");
 }
 
-void closeFile () {
-	fclose(cfile);
+
+int executeBatch() {
+   STARTUPINFO si;
+   PROCESS_INFORMATION pi;
+
+   ZeroMemory(&si, sizeof(si));
+   si.cb = sizeof(si);
+   si.wShowWindow = SW_HIDE;
+   si.dwFlags |= STARTF_USESHOWWINDOW;
+   ZeroMemory(&pi, sizeof(pi));
+   if (!CreateProcess(NULL,
+      "cmd /C  C:\\Users\\Tim\\Desktop\\FH\\Test\\compileAndExecute.bat",
+      NULL,
+      NULL,
+      FALSE,
+      0,
+      NULL,
+      NULL,
+      &si,
+      &pi)
+      ) {
+      return FALSE;
+   }
+   WaitForSingleObject(pi.hProcess, INFINITE);
+   CloseHandle(pi.hProcess);
+   CloseHandle(pi.hThread);
+   return TRUE;
+}
+
+void closeFile() {
+   fclose(cfile);
+   executeBatch();
 }
 
 void generate( PT_ENTRY *pentry) {

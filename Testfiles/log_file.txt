@@ -1,612 +1,1506 @@
-C:/Users/Tim/Desktop/FH/ASC/Project/Testfiles/lab.txt
+C:/Users/Tim/Desktop/FH/ASC/Project/Programme/as_lab.txt
+smark 8 0 0
+teleport 47 1
 look 0
-look 1
-look 1
 look 0
 look 1
-move 1
-look 1
-look 2
+smark 1 3 1
 look 1
-move 1
 look 2
-look 1
-move 1
+smark 2 0 1
 look 2
+look 3
+smark 3 1 1
+look 3
+dmarker 8
+smark 8 0 -1
+teleport 47 1
+look 0
+look 0
 look 1
-move 1
-look 2
+smark 1 3 2
 look 1
-move 1
 look 2
-look 1
-move 1
+smark 2 0 2
 look 2
+look 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 48 1
+look 0
+look 0
 look 1
-move 1
-look 2
 look 1
-move 1
 look 2
-look 1
-move 1
 look 2
+look 3
+smark 3 1 2
+look 3
+dmarker 8
+smark 8 0 -1
+teleport 47 2
+look 0
+look 0
 look 1
-move 1
-look 2
 look 1
-move 1
 look 2
-look 1
-move 1
 look 2
+look 3
+smark 3 1 2
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 46 1
+look 0
+look 0
 look 1
-move 1
-look 2
+smark 1 3 3
 look 1
-move 1
 look 2
-look 1
-move 1
+smark 2 0 3
 look 2
+look 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 49 1
+look 0
+look 0
 look 1
-move 1
-look 2
 look 1
-move 1
 look 2
-look 1
-move 1
 look 2
+look 3
+look 3
+dmarker 8
+smark 8 0 -1
+teleport 48 2
+look 0
+look 0
 look 1
-move 1
-look 2
 look 1
-move 1
 look 2
 look 2
+look 3
+smark 3 1 3
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 46 2
+look 0
+look 0
 look 1
+look 1
 look 2
-move 2
 look 2
 look 3
-look 2
-move 2
+smark 3 1 3
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 45 1
+look 0
+look 0
+look 1
+smark 1 3 4
+look 1
 look 2
-move 2
-look 3
-look 3
+smark 2 0 4
 look 2
 look 3
-move 3
 look 3
+dmarker 8
+smark 8 3 -1
+teleport 50 1
 look 0
-look 3
-move 3
-look 0
-look 3
-move 3
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
-look 0
 look 3
-move 3
+dmarker 8
+smark 8 0 -1
+teleport 49 2
 look 0
-look 3
-move 3
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
-look 0
+smark 3 1 4
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 45 2
 look 0
-look 3
 look 0
-look 3
+look 1
+look 1
 look 2
-move 2
 look 2
 look 3
-look 2
-move 2
+smark 3 1 4
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 44 1
+look 0
+look 0
+look 1
+smark 1 3 5
+look 1
 look 2
-move 2
-look 3
-look 3
+smark 2 0 5
 look 2
 look 3
-move 3
 look 3
+dmarker 8
+smark 8 3 -1
+teleport 51 1
 look 0
-look 3
-move 3
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
-look 0
-look 0
 look 3
+dmarker 8
+smark 8 0 -1
+teleport 50 2
 look 0
-move 0
 look 0
 look 1
-look 0
-move 0
 look 1
+look 2
+look 2
+look 3
+smark 3 1 5
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 44 2
 look 0
-look 1
 look 0
 look 1
-look 0
-look 3
-move 3
+look 1
+look 2
+look 2
 look 3
-look 0
+smark 3 1 5
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 43 1
 look 0
-look 3
 look 0
-look 3
-look 2
-move 1
 look 1
-look 2
-look 2
 look 1
-look 2
-move 2
 look 2
-look 3
+smark 2 0 6
 look 2
-move 2
 look 3
 look 3
+dmarker 8
+smark 8 3 -1
+teleport 52 1
+look 0
+look 0
+look 1
+look 1
 look 2
-look 3
-move 3
+look 2
 look 3
-look 0
 look 3
-move 3
+dmarker 8
+smark 8 0 -1
+teleport 51 2
 look 0
-look 3
-move 3
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
-look 0
+smark 3 1 6
 look 3
-move 3
+dmarker 8
+smark 8 1 -1
+teleport 43 2
 look 0
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
+smark 3 1 6
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 42 1
 look 0
-move 0
 look 0
 look 1
-look 0
-move 0
 look 1
+look 2
+look 2
+look 3
+look 3
+dmarker 8
+smark 8 0 -1
+teleport 52 2
 look 0
-look 1
 look 0
 look 1
-look 0
-look 3
-move 3
+look 1
+look 2
+look 2
 look 3
-look 0
+smark 3 1 7
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 42 2
 look 0
-look 3
 look 0
-look 3
-look 2
-move 1
 look 1
-look 2
-look 2
 look 1
 look 2
-move 2
 look 2
 look 3
-look 2
-move 2
+smark 3 1 7
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 41 1
+look 0
+look 0
+look 1
+look 1
 look 2
-look 3
 look 2
 look 3
-look 2
-look 1
-move 1
+smark 3 1 8
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 41 2
+look 0
+look 0
 look 1
-look 2
 look 1
-move 1
 look 2
-look 1
-move 1
 look 2
+look 3
+smark 3 1 8
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 40 1
+look 0
+look 0
 look 1
-move 1
-look 2
 look 1
-move 1
 look 2
-look 1
-move 1
 look 2
+look 3
+smark 3 1 9
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 40 2
+look 0
+look 0
 look 1
-move 1
-look 2
 look 1
-move 1
 look 2
 look 2
+look 3
+smark 3 1 9
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 39 1
+look 0
+look 0
 look 1
-look 2
-move 2
+look 1
 look 2
-look 3
 look 2
 look 3
-look 2
+smark 3 1 10
 look 3
-look 2
-look 1
-move 1
+dmarker 8
+smark 8 1 -1
+teleport 39 2
+look 0
+look 0
 look 1
-look 2
 look 1
-move 1
 look 2
-look 1
-move 1
 look 2
+look 3
+smark 3 1 10
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 38 1
+look 0
+look 0
 look 1
-move 1
-look 2
 look 1
-move 1
 look 2
-look 1
-move 1
 look 2
+look 3
+smark 3 1 11
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 38 2
+look 0
+look 0
 look 1
-move 1
-look 2
 look 1
-move 1
 look 2
-look 1
-move 1
 look 2
+look 3
+smark 3 1 11
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 37 1
+look 0
+look 0
 look 1
-move 1
-look 2
 look 1
 look 2
-look 1
 look 2
-look 1
-look 0
-move 3
 look 3
-look 0
+smark 3 1 12
 look 3
-move 3
+dmarker 8
+smark 8 1 -1
+teleport 37 2
 look 0
-look 3
-move 3
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
-look 0
+smark 3 1 12
 look 3
-move 3
+dmarker 8
+smark 8 1 -1
+teleport 36 1
 look 0
-look 3
-move 3
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
-look 0
+smark 3 1 13
 look 3
-move 3
+dmarker 8
+smark 8 1 -1
+teleport 36 2
 look 0
-look 3
-move 3
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
-look 0
-look 0
+smark 3 1 13
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 35 1
 look 0
-move 0
 look 0
 look 1
-look 0
-move 0
 look 1
+look 2
+look 2
+look 3
+smark 3 1 14
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 35 2
 look 0
-move 0
-look 1
 look 0
-move 0
 look 1
 look 1
+look 2
+look 2
+look 3
+smark 3 1 14
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 34 1
 look 0
-look 1
-move 1
+look 0
 look 1
-look 2
 look 1
-move 1
 look 2
-look 1
-move 1
 look 2
+look 3
+smark 3 1 15
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 34 2
+look 0
+look 0
 look 1
-move 1
-look 2
 look 1
-move 1
 look 2
-look 1
-move 1
 look 2
+look 3
+smark 3 1 15
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 33 1
+look 0
+look 0
 look 1
-move 1
-look 2
 look 1
 look 2
-look 1
 look 2
-look 1
+look 3
+smark 3 1 16
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 33 2
 look 0
-move 0
 look 0
 look 1
-look 0
-move 0
 look 1
+look 2
+look 2
+look 3
+smark 3 1 16
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 32 1
 look 0
-move 0
+look 0
 look 1
 look 1
+look 2
+smark 2 0 17
+look 2
+look 3
+smark 3 1 17
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 32 2
 look 0
+look 0
 look 1
-move 1
 look 1
 look 2
-look 1
-move 1
 look 2
+look 3
+smark 3 1 17
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 31 1
+look 0
+look 0
+look 1
+look 1
+look 2
+smark 2 0 18
+look 2
+look 3
+smark 3 1 18
+look 3
+dmarker 8
+smark 8 0 -1
+teleport 32 3
+look 0
+look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 18
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 31 2
+look 0
+look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 18
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 30 1
+look 0
+look 0
+look 1
+smark 1 3 19
+look 1
+look 2
+look 2
+look 3
+smark 3 1 19
+look 3
+dmarker 8
+smark 8 0 -1
+teleport 32 4
+look 0
+look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 19
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 31 3
+look 0
+look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 19
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 30 2
+look 0
+look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 19
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 29 1
+look 0
+look 0
+look 1
+smark 1 3 20
+look 1
+look 2
+look 2
+look 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 33 4
+look 0
+look 0
+look 1
 look 1
-move 1
 look 2
+look 2
+look 3
+smark 3 1 20
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 31 4
+look 0
+look 0
+look 1
 look 1
-move 1
 look 2
+look 2
+look 3
+smark 3 1 20
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 30 3
+look 0
+look 0
+look 1
 look 1
-move 1
 look 2
+look 2
+look 3
+smark 3 1 20
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 29 2
+look 0
+look 0
+look 1
 look 1
-move 1
 look 2
+look 2
+look 3
+smark 3 1 20
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 28 1
+look 0
+look 0
+look 1
+smark 1 3 21
 look 1
-move 1
 look 2
+look 2
+look 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 34 4
+look 0
+look 0
 look 1
-move 1
+look 1
+look 2
 look 2
+look 3
+smark 3 1 21
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 30 4
+look 0
+look 0
 look 1
-move 1
+look 1
+look 2
 look 2
+look 3
+smark 3 1 21
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 29 3
+look 0
+look 0
 look 1
-move 1
+look 1
+look 2
 look 2
+look 3
+smark 3 1 21
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 28 2
+look 0
+look 0
 look 1
-move 1
+look 1
+look 2
 look 2
+look 3
+smark 3 1 21
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 27 1
+look 0
+look 0
 look 1
-move 1
+smark 1 3 22
+look 1
+look 2
 look 2
+look 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 35 4
+look 0
+look 0
+look 1
 look 1
-move 1
 look 2
+look 2
+look 3
+smark 3 1 22
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 29 4
+look 0
+look 0
+look 1
 look 1
-move 1
 look 2
+look 2
+look 3
+smark 3 1 22
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 28 3
+look 0
+look 0
+look 1
 look 1
-move 1
 look 2
 look 2
+look 3
+smark 3 1 22
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 27 2
+look 0
+look 0
 look 1
+look 1
 look 2
-move 2
 look 2
+look 3
+smark 3 1 22
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 26 1
+look 0
+look 0
+look 1
+smark 1 3 23
+look 1
 look 2
-move 2
+look 2
+look 3
 look 3
+dmarker 8
+smark 8 3 -1
+teleport 36 4
+look 0
+look 0
+look 1
+look 1
+look 2
 look 2
-move 2
 look 3
+smark 3 1 23
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 28 4
+look 0
+look 0
+look 1
+look 1
+look 2
 look 2
-move 2
 look 3
+smark 3 1 23
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 27 3
+look 0
+look 0
+look 1
+look 1
+look 2
 look 2
-move 2
 look 3
+smark 3 1 23
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 26 2
+look 0
+look 0
+look 1
+look 1
 look 2
+look 2
 look 3
-move 3
+smark 3 1 23
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 25 1
+look 0
 look 0
+look 1
+smark 1 3 24
+look 1
+look 2
+look 2
 look 3
-move 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 37 4
 look 0
 look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 24
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 27 4
 look 0
-move 0
 look 0
 look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 24
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 26 3
 look 0
-move 0
+look 0
+look 1
 look 1
+look 2
+look 2
+look 3
+smark 3 1 24
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 25 2
 look 0
+look 0
+look 1
 look 1
+look 2
+look 2
+look 3
+smark 3 1 24
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 24 1
 look 0
+look 0
+look 1
+smark 1 3 25
 look 1
+look 2
+look 2
+look 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 38 4
 look 0
+look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
+smark 3 1 25
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 26 4
+look 0
 look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 25
 look 3
-move 3
+dmarker 8
+smark 8 1 -1
+teleport 25 3
 look 0
+look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 25
 look 3
-move 3
+dmarker 8
+smark 8 1 -1
+teleport 24 2
 look 0
+look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 25
 look 3
-move 3
+dmarker 8
+smark 8 1 -1
+teleport 23 1
 look 0
+look 0
+look 1
+smark 1 3 26
+look 1
+look 2
+look 2
+look 3
 look 3
-move 3
+dmarker 8
+smark 8 3 -1
+teleport 39 4
 look 0
+look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 26
 look 3
-move 3
+dmarker 8
+smark 8 1 -1
+teleport 25 4
 look 0
+look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
+smark 3 1 26
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 24 3
+look 0
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
+smark 3 1 26
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 23 2
+look 0
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
+smark 3 1 26
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 22 1
+look 0
 look 0
+look 1
+smark 1 3 27
+look 1
+look 2
+look 2
 look 3
-move 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 40 4
+look 0
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
+smark 3 1 27
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 24 4
+look 0
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
+smark 3 1 27
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 23 3
 look 0
+look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 27
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 22 2
 look 0
+look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 27
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 21 1
+look 0
+look 0
+look 1
+smark 1 3 28
+look 1
 look 2
-move 2
 look 2
 look 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 41 4
+look 0
+look 0
+look 1
+look 1
+look 2
 look 2
-move 2
 look 3
+smark 3 1 28
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 23 4
+look 0
+look 0
+look 1
+look 1
+look 2
 look 2
 look 3
+smark 3 1 28
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 22 3
+look 0
+look 0
+look 1
+look 1
 look 2
+look 2
+look 3
+smark 3 1 28
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 21 2
+look 0
+look 0
+look 1
+look 1
 look 2
+look 2
+look 3
+smark 3 1 28
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 20 1
+look 0
+look 0
 look 1
-move 1
+smark 1 3 29
 look 1
+look 2
 look 2
+look 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 42 4
+look 0
+look 0
 look 1
-move 1
+look 1
+look 2
 look 2
+look 3
+smark 3 1 29
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 22 4
+look 0
+look 0
 look 1
-move 1
+look 1
+look 2
 look 2
+look 3
+smark 3 1 29
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 21 3
+look 0
+look 0
 look 1
-move 1
+look 1
 look 2
+look 2
+look 3
+smark 3 1 29
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 20 2
+look 0
+look 0
+look 1
 look 1
-move 1
 look 2
+look 2
+look 3
+smark 3 1 29
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 19 1
+look 0
+look 0
+look 1
+smark 1 3 30
 look 1
-move 1
 look 2
+look 2
+look 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 43 4
+look 0
+look 0
+look 1
 look 1
-move 1
 look 2
+look 2
+look 3
+smark 3 1 30
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 21 4
+look 0
+look 0
+look 1
 look 1
-move 1
 look 2
+look 2
+look 3
+smark 3 1 30
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 20 3
+look 0
+look 0
+look 1
 look 1
-move 1
 look 2
+look 2
+look 3
+smark 3 1 30
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 19 2
+look 0
+look 0
 look 1
-move 1
+look 1
+look 2
 look 2
+look 3
+smark 3 1 30
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 18 1
+look 0
+look 0
 look 1
-move 1
+smark 1 3 31
+look 1
+look 2
 look 2
+look 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 44 4
+look 0
+look 0
 look 1
-move 1
+look 1
+look 2
 look 2
+look 3
+smark 3 1 31
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 20 4
+look 0
+look 0
 look 1
-move 1
+look 1
 look 2
 look 2
+look 3
+smark 3 1 31
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 19 3
+look 0
+look 0
+look 1
 look 1
 look 2
-move 2
 look 2
 look 3
+smark 3 1 31
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 18 2
+look 0
+look 0
+look 1
+look 1
 look 2
-move 2
+look 2
 look 3
+smark 3 1 31
 look 3
+dmarker 8
+smark 8 1 -1
+teleport 17 1
+look 0
+look 0
+look 1
+smark 1 3 32
+look 1
+look 2
 look 2
 look 3
-move 3
 look 3
+dmarker 8
+smark 8 3 -1
+teleport 45 4
 look 0
+look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 32
 look 3
-move 3
+dmarker 8
+smark 8 1 -1
+teleport 19 4
 look 0
+look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 32
 look 3
-move 3
+dmarker 8
+smark 8 1 -1
+teleport 18 3
 look 0
+look 0
+look 1
+look 1
+look 2
+look 2
+look 3
+smark 3 1 32
 look 3
-move 3
+dmarker 8
+smark 8 1 -1
+teleport 17 2
 look 0
+look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
+smark 3 1 32
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 16 1
+look 0
 look 0
+look 1
+smark 1 3 33
+look 1
+look 2
+look 2
 look 3
-move 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 46 4
+look 0
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
+smark 3 1 33
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 18 4
+look 0
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
+smark 3 1 33
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 17 3
+look 0
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
+smark 3 1 33
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 16 2
+look 0
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
-move 3
+smark 3 1 33
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 15 1
+look 0
 look 0
+look 1
+smark 1 3 34
+look 1
+look 2
+look 2
 look 3
+look 3
+dmarker 8
+smark 8 3 -1
+teleport 47 4
+look 0
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
+smark 3 1 34
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 17 4
+look 0
 look 0
+look 1
+look 1
+look 2
+look 2
 look 3
+smark 3 1 34
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 16 3
+look 0
+look 0
+look 1
+look 1
+look 2
 look 2
-move 2
+look 3
+smark 3 1 34
+look 3
+dmarker 8
+smark 8 1 -1
+teleport 15 2
+look 0
+look 0
+look 1
+look 1
 look 2
 look 2
+look 3
+smark 3 1 34
+look 3
+dmarker 8
+smark 8 1 -1
