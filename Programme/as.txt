@@ -1,4 +1,4 @@
-load C:\Users\Sebastian V\Documents\ASCLab\Programme
+load "C:\Users\Sebastian V\Documents\ASCLab\Programme\as_lab.txt"
 {	
 	set_marker THIS FORWARD 0
 	while((position_x != goal_x) AND (position_y != goal_y))
@@ -86,7 +86,11 @@ load C:\Users\Sebastian V\Documents\ASCLab\Programme
 			}
 		}
 		//Remove this marker
+		direction mDir;
+		mDir = marker_direction THIS;
 		delete_marker minIndex;
+		set_marker THIS mDir -1;
+		
 	}
 	if(position_x == goal_x)
 	{
