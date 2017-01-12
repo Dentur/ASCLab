@@ -1,6 +1,6 @@
-load "C:\Users\Sebastian V\Documents\ASCLab\Programme\as_lab.txt"
+load "C:\Users\Sebastian V\Documents\ASCLab\Programme\as_lab.txt";
 {	
-	set_marker THIS FORWARD 0
+	set_marker THIS FORWARD 0;
 	while((position_x != goal_x) AND (position_y != goal_y))
 	{
 		//Select lowest maker
