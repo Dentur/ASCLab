@@ -317,9 +317,9 @@ void Labyrinth::teleport(int index) {
       return;
    }
    string str = "teleport ";
-   str += (char)(x);
+   str += to_string(x);
    str += " ";
-   str += (char)(y);
+   str += to_string(y);
    log(str);
    x = marks[index].x;
    y = marks[index].y;
@@ -376,7 +376,7 @@ void Labyrinth::setMarker(Direction placeDir, Direction dir, int value) {
       }
       addMarker(dir, coords[0], coords[1], value);
    }
-   string str = "smark ";
+   string str = "smarker ";
    str += (char)(getRealDirection(placeDir) + 48);
    str += ' ';
    str += (char)(getRealDirection(dir) + 48);
