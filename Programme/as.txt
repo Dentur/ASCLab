@@ -1,4 +1,4 @@
-load C:\Users\Sebastian V\Documents\ASCLab\Programme
+load "C:\Users\Sebastian V\Documents\ASCLab\Programme\as_lab.txt"
 {	
 	set_marker THIS FORWARD 0
 	while((position_x != goal_x) AND (position_y != goal_y))
@@ -19,6 +19,7 @@ load C:\Users\Sebastian V\Documents\ASCLab\Programme
 				minVal = curVal;
 				minIndex = index;
 			}
+			index = index + 1;
 		}
 		if(minIndex == -1)
 		{
@@ -30,62 +31,66 @@ load C:\Users\Sebastian V\Documents\ASCLab\Programme
 		//Set surrounding markers
 		if(look NORTH == FREE)
 		{
-			set_marker NORTH SOUTH curVal+1
+			set_marker NORTH SOUTH minVal+1;
 		}
-		if(look NORTH == MARKER)
+		if(look NORTH == MARK)
 		{
 			if(marker_value NORTH >= 0)
 			{
-				if((curVal+1) < marker_value NORTH)
+				if((minVal+1) < marker_value NORTH)
 				{
-					set_marker NORTH SOUTH curVal+1
+					set_marker NORTH SOUTH minVal+1;
 				}
 			}
 		}
 		if(look EAST == FREE)
 		{
-			set_marker EAST WEST curVal+1
+			set_marker EAST WEST minVal+1;
 		}
-		if(look EAST == MARKER)
+		if(look EAST == MARK)
 		{
 			if(marker_value EAST >= 0)
 			{
-				if((curVal+1) < marker_value EAST)
+				if((minVal+1) < marker_value EAST)
 				{
-					set_marker EAST WEST curVal+1
+					set_marker EAST WEST minVal+1;
 				}
 			}
 		}
 		if(look SOUTH == FREE)
 		{
-			set_marker SOUTH NORTH curVal+1
+			set_marker SOUTH NORTH minVal+1;
 		}
-		if(look SOUTH == MARKER)
+		if(look SOUTH == MARK)
 		{
 			if(marker_value SOUTH >= 0)
 			{
-				if((curVal+1) < marker_value SOUTH)
+				if((minVal+1) < marker_value SOUTH)
 				{
-					set_marker SOUTH NORTH curVal+1
+					set_marker SOUTH NORTH minVal+1;
 				}
 			}
 		}
 		if(look WEST == FREE)
 		{
-			set_marker WEST EAST curVal+1
+			set_marker WEST EAST minVal+1;
 		}
-		if(look WEST == MARKER)
+		if(look WEST == MARK)
 		{
 			if(marker_value WEST >= 0)
 			{
-				if((curVal+1) < marker_value WEST)
+				if((minVal+1) < marker_value WEST)
 				{
-					set_marker WEST EAST curVal+1
+					set_marker WEST EAST minVal+1;
 				}
 			}
 		}
 		//Remove this marker
+		direction mDir;
+		mDir = marker_direction THIS;
 		delete_marker minIndex;
+		set_marker THIS mDir -1;
+		
 	}
 	if(position_x == goal_x)
 	{
