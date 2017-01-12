@@ -5,6 +5,8 @@ Labyrinth::Labyrinth() {
    view = NORTH;
    x = -1;
    y = -1;
+   goalX = -1;
+   goalY = -1;
 }
 
 
@@ -42,6 +44,12 @@ void Labyrinth::load(string File) {
             if (line[i] == 's' || line[i] == 'S') {
                x = i;
                y = row / labWidth;
+            }
+         }
+         if (goalX < 0) {
+            if (line[i] == 'g' || line[i] == 'G') {
+               goalX = i;
+               goalY = row / labWidth;
             }
          }
       }
@@ -369,7 +377,11 @@ void Labyrinth::setMarker(Direction placeDir, Direction dir, int value) {
       addMarker(dir, coords[0], coords[1], value);
    }
    string str = "smark ";
+   str += (char)(getRealDirection(placeDir) + 48);
+   str += ' ';
    str += (char)(getRealDirection(dir) + 48);
+   str += ' ';
+   str += to_string(value);
    log(str);
 }
 void Labyrinth::deleteMarker(Direction dir) {

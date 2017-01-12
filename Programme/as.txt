@@ -1,9 +1,8 @@
-load "C:\Users\Sebastian V\Documents\ASCLab\Programme\as_lab.txt";
+load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\as_lab.txt";
 {	
 	set_marker THIS FORWARD 0;
 	while((position_x != goal_x) AND (position_y != goal_y))
 	{
-		//Select lowest maker
 		int index;
 		index = 0;
 		int minIndex;
@@ -14,7 +13,7 @@ load "C:\Users\Sebastian V\Documents\ASCLab\Programme\as_lab.txt";
 		{
 			int curVal; 
 			curVal = get_marker index;
-			if(curVal < minVal)
+			if(curVal < minVal AND curVal != -1)
 			{
 				minVal = curVal;
 				minIndex = index;
@@ -26,9 +25,7 @@ load "C:\Users\Sebastian V\Documents\ASCLab\Programme\as_lab.txt";
 			print "Error: Goal cannot be reached (1)";
 			break;
 		}
-		//Teleport to marker
 		teleport minIndex;
-		//Set surrounding markers
 		if(look NORTH == FREE)
 		{
 			set_marker NORTH SOUTH minVal+1;
@@ -85,10 +82,9 @@ load "C:\Users\Sebastian V\Documents\ASCLab\Programme\as_lab.txt";
 				}
 			}
 		}
-		//Remove this marker
 		direction mDir;
 		mDir = marker_direction THIS;
-		delete_marker minIndex;
+		delete_marker THIS;
 		set_marker THIS mDir -1;
 		
 	}
