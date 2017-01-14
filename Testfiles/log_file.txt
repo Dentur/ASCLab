@@ -1,4 +1,4 @@
-C:/Users/Tim/Desktop/FH/ASC/Project/Programme/as_lab.txt
+C:\Users\Sebastian V\Documents\ASCLab\Programme/as_lab.txt
 smark 8 0 0
 teleport 47 1
 look 0
