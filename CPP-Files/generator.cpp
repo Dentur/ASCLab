@@ -106,7 +106,7 @@ int executeBatch() {
    si.dwFlags |= STARTF_USESHOWWINDOW;
    ZeroMemory(&pi, sizeof(pi));
    if (!CreateProcess(NULL,
-      "cmd /C  C:\\Users\\Tim\\Desktop\\FH\\Test\\compileAndExecute.bat",
+      "cmd /C  .\\compileAndExecute.bat",
       NULL,
       NULL,
       FALSE,

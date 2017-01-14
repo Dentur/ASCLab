@@ -1,7 +1,7 @@
 load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\as_lab.txt";
 {	
 	set_marker THIS FORWARD 0;
-	while((position_x != goal_x) AND (position_y != goal_y))
+	while((position_x != goal_x) OR (position_y != goal_y))
 	{
 		int index;
 		index = 0;
@@ -88,7 +88,7 @@ load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\as_lab.txt";
 		set_marker THIS mDir -1;
 		
 	}
-	if(position_x == goal_x)
+	if(position_x == goal_x AND position_y == goal_y)
 	{
 		print "Ziel gefunden";
 	}
