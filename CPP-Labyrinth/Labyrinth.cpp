@@ -365,18 +365,19 @@ int Labyrinth::getMarkerIndexByCoords(int x, int y) {
 
 void Labyrinth::setMarker(Direction placeDir, Direction dir, int value) {
    char old = setChar(placeDir, 'm');
+   int* coords = getCoords(placeDir);
+   dir = getRealDirection(dir);
+   string str = "dmarker ";
    if (old != 'm') {
-      int* coords = getCoords(placeDir);
-      if (coords[1] == 3) {
-         int k = 0;
-         k++;
-         k++;
-         k++;
-         k++;
-      }
       addMarker(dir, coords[0], coords[1], value);
+   } else {
+	  int index = getMarkerIndexByCoords(coords[0], coords[1]);
+	  marks[index].value = value;
+	  marks[index].dir = dir;
+	  str += (char)(getRealDirection(dir) + 48);
+	  log(str);
    }
-   string str = "smarker ";
+   str = "smarker ";
    str += (char)(getRealDirection(placeDir) + 48);
    str += ' ';
    str += (char)(getRealDirection(dir) + 48);
