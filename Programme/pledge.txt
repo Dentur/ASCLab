@@ -1,0 +1,51 @@
+load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\pledge_lab.txt";
+{	
+	int counter;
+	counter = 0;
+	bool holdWall;
+	holdWall = false;
+	DIRECTION startDir;
+	startDir = get_direction;
+	
+	while(position_x != goal_x OR position_y != goal_y)
+	{
+		if(counter == 0 AND startDir == get_direction)
+		{
+			holdWall = false;
+		}
+		if(holdWall)
+		{
+			if(look RIGHT == WALL)
+			{
+				if(look FORWARD == WALL)
+				{
+					counter = counter -1;
+					turn LEFT;
+				}
+				else
+				{
+					step FORWARD;	
+				}
+			}
+			else
+			{
+				conter = counter+1;
+				move RIGHT;
+			}
+		}
+		else
+		{
+			if(look FORWARD == WALL)
+			{
+				turn LEFT;
+				conter = counter + 1;
+				holdWall = true;
+			}
+			else
+			{
+				move FORWARD;
+			}
+		}
+	}
+	print "Found Goal";
+}
