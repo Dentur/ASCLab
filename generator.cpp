@@ -2,9 +2,15 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
+#include <fstream>
 #include "generator.h"
+#include <Windows.h>
+#include <WinBase.h>
 
 using namespace std;
+
+HANDLE g_hChildStd_OUT_Rd = NULL;
+HANDLE g_hChildStd_OUT_Wr = NULL;
 
 FILE *cfile;
 struct list {
@@ -87,14 +93,130 @@ bool isInHeap(char* identifier)
 }
 
 void createFile () {
-    cfile = fopen("C:\\Users\\Tim\\Desktop\\FH\\Test\\program.cpp", "w");
+    cfile = fopen(".\\program.cpp", "w");
 }
 void createFile (char* path) {
     cfile = fopen(path, "w");
 }
 
-void closeFile () {
-	fclose(cfile);
+int setHandle() {
+   SECURITY_ATTRIBUTES saAttr;
+
+   // Set the bInheritHandle flag so pipe handles are inherited. 
+
+   saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
+   saAttr.bInheritHandle = TRUE;
+   saAttr.lpSecurityDescriptor = NULL;
+
+   // Create a pipe for the child process's STDOUT. 
+
+   if (!CreatePipe(&g_hChildStd_OUT_Rd, &g_hChildStd_OUT_Wr, &saAttr, 0)) {
+      return FALSE;
+   }
+
+   // Ensure the read handle to the pipe for STDOUT is not inherited.
+
+   if (!SetHandleInformation(g_hChildStd_OUT_Rd, HANDLE_FLAG_INHERIT, 0)) {
+      return FALSE;
+   }
+   return TRUE;
+}
+
+void readOutput() {
+   DWORD dwRead, dwWritten;
+   CHAR chBuf[1024];
+   BOOL bSuccess = FALSE;
+   HANDLE hParentStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+   for (;;) {
+      bSuccess = ReadFile(g_hChildStd_OUT_Rd, chBuf, 1024, &dwRead, NULL);
+      if (!bSuccess || dwRead == 0) break;
+
+      bSuccess = WriteFile(hParentStdOut, chBuf,
+         dwRead, &dwWritten, NULL);
+      if (!bSuccess) break;
+   }
+}
+
+int execute() {
+   if (!setHandle()) {
+      return FALSE;
+   }
+   STARTUPINFO si;
+   PROCESS_INFORMATION pi;
+
+   ZeroMemory(&pi, sizeof(PROCESS_INFORMATION));
+   ZeroMemory(&si, sizeof(STARTUPINFO));
+   si.cb = sizeof(STARTUPINFO);
+   si.hStdError = g_hChildStd_OUT_Wr;
+   si.hStdOutput = g_hChildStd_OUT_Wr;
+   si.dwFlags |= STARTF_USESTDHANDLES;
+   si.dwFlags |= STARTF_USESHOWWINDOW;
+
+   if (!CreateProcess(NULL,
+      "cmd /C  .\\compileAndExecute.bat 2> error.txt",
+      NULL,
+      NULL,
+      FALSE,
+      0,
+      NULL,
+      NULL,
+      &si,
+      &pi)
+      ) {
+      return FALSE;
+   }
+   WaitForSingleObject(pi.hProcess, INFINITE);
+   CloseHandle(pi.hProcess);
+   CloseHandle(pi.hThread);
+   readOutput();
+   return TRUE;
+}
+
+int executeBatch() {
+   STARTUPINFO si;
+   PROCESS_INFORMATION pi;
+
+   ZeroMemory(&si, sizeof(si));
+   si.cb = sizeof(si);
+   si.wShowWindow = SW_HIDE;
+   si.dwFlags |= STARTF_USESHOWWINDOW;
+   ZeroMemory(&pi, sizeof(pi));
+   if (!CreateProcess(NULL,
+      "cmd /C  .\\compileAndExecute.bat 1> out.txt 2>error.err",
+      NULL,
+      NULL,
+      FALSE,
+      0,
+      NULL,
+      NULL,
+      &si,
+      &pi)
+      ) {
+      return FALSE;
+   }
+   WaitForSingleObject(pi.hProcess, INFINITE);
+   CloseHandle(pi.hProcess);
+   CloseHandle(pi.hThread);
+   return TRUE;
+}
+
+void closeFile() {
+   fclose(cfile);
+   printf("Execute...");
+   executeBatch();
+   ifstream _errorFile("error.txt");
+   if (_errorFile.good()) {
+      string line;
+      printf("failed\n");
+      while (getline(_errorFile, line)) {
+         printf("   %s\n", line.c_str());
+      }
+   }
+   else {
+      printf("done\n");
+   }
+   _errorFile.close();
 }
 
 void generate( PT_ENTRY *pentry) {
@@ -105,13 +227,18 @@ void generate( PT_ENTRY *pentry) {
 			fprintf(cfile, "using namespace std;\n\n");
 
 			//Main function
-			fprintf(cfile, "int main() {\n");
-			fprintf(cfile, "Labyrinth lab = Labyrinth();\n");
+			fprintf(cfile, "int main() {\ntry {\n");
+         fprintf(cfile, "remove(\"error.txt\");\n");
+         fprintf(cfile, "Labyrinth lab = Labyrinth();\n");
 			generate(pentry->op1);
 			for(PT_ENTRY* pt = pentry->op2; pt; pt = pt->nxt)
 				generate(pt);
 			
-			fprintf(cfile, "}\n");
+         fprintf(cfile, "} catch (const std::exception& ex) {\n");
+         fprintf(cfile, "FILE* _errorFile = fopen(\"error.txt\", \"w\");\n");
+         fprintf(cfile, "fprintf(_errorFile, ex.what());\n");
+         fprintf(cfile, "fclose(_errorFile);\n");
+         fprintf(cfile, "}\n}\n");
 		break;
 
 		case LOAD_CMD:
