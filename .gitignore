@@ -19,7 +19,6 @@ lex.yy.c
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
 
 # Fortran module files
 *.mod
@@ -38,4 +37,4 @@ lex.yy.c
 *.tab.c
 *.tab.h
 CPP-Files/*
-!Compiler/*
+!Compiler/
