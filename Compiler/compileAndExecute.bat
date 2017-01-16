@@ -11,3 +11,7 @@ del program.ilk
 del program.pdb
 del Labyrinth.obj
 del vc120.pdb
+IF EXIST "error.txt" (
+	exit /b
+)
+start ASCLabVisualizer.exe -way "log_file.txt"
