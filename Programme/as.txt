@@ -13,7 +13,7 @@ load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\as_lab.txt";
 		{
 			int curVal; 
 			curVal = get_marker index;
-			if(curVal < minVal AND curVal != -1)
+			if(curVal < minVal AND curVal >= 0)
 			{
 				minVal = curVal;
 				minIndex = index;
@@ -30,6 +30,11 @@ load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\as_lab.txt";
 		{
 			set_marker NORTH SOUTH minVal+1;
 		}
+		if(look NORTH == GOAL)
+		{
+			move NORTH;
+			break;
+		}
 		if(look NORTH == MARK)
 		{
 			if(marker_value NORTH >= 0)
@@ -43,6 +48,11 @@ load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\as_lab.txt";
 		if(look EAST == FREE)
 		{
 			set_marker EAST WEST minVal+1;
+		}
+		if(look EAST == GOAL)
+		{
+			move EAST;
+			break;
 		}
 		if(look EAST == MARK)
 		{
@@ -58,6 +68,11 @@ load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\as_lab.txt";
 		{
 			set_marker SOUTH NORTH minVal+1;
 		}
+		if(look SOUTH == GOAL)
+		{
+			move SOUTH;
+			break;
+		}
 		if(look SOUTH == MARK)
 		{
 			if(marker_value SOUTH >= 0)
@@ -71,6 +86,11 @@ load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\as_lab.txt";
 		if(look WEST == FREE)
 		{
 			set_marker WEST EAST minVal+1;
+		}
+		if(look WEST == GOAL)
+		{
+			move WEST;
+			break;
 		}
 		if(look WEST == MARK)
 		{
