@@ -3,114 +3,114 @@ load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\as_lab.txt";
 	set_marker THIS FORWARD 0;
 	while((position_x != goal_x) OR (position_y != goal_y))
 	{
-		int index;
-		index = 0;
-		int minIndex;
-		int minVal;
-		minIndex = -1;
-		minVal = 99999;
-		while(index < get_marker_count)
+		int i_index;
+		i_index = 0;
+		int i_minIndex;
+		int i_minVal;
+		i_minIndex = -1;
+		i_minVal = 99999;
+		while(i_index < get_marker_count)
 		{
-			int curVal; 
-			curVal = get_marker index;
-			if(curVal < minVal AND curVal >= 0)
+			int i_curVal; 
+			i_curVal = get_marker i_index;
+			if(i_curVal < i_minVal AND i_curVal >= 0)
 			{
-				minVal = curVal;
-				minIndex = index;
+				i_minVal = i_curVal;
+				i_minIndex = i_index;
 			}
-			index = index + 1;
+			i_index = i_index + 1;
 		}
-		if(minIndex == -1)
+		if(i_minIndex == -1)
 		{
 			print "Error: Goal cannot be reached (1)";
 			break;
 		}
-		teleport minIndex;
-		wall w;
-		w = look NORTH;
-		if(w == FREE)
+		teleport i_minIndex;
+		wall w_wall;
+		w_wall = look NORTH;
+		if(w_wall == FREE)
 		{
-			set_marker NORTH SOUTH minVal+1;
+			set_marker NORTH SOUTH i_minVal+1;
 		}
-		if(w == GOAL)
+		if(w_wall == GOAL)
 		{
 			move NORTH;
 			break;
 		}
-		if(w == MARK)
+		if(w_wall == MARK)
 		{
 			if(marker_value NORTH >= 0)
 			{
-				if((minVal+1) < marker_value NORTH)
+				if((i_minVal+1) < marker_value NORTH)
 				{
-					set_marker NORTH SOUTH minVal+1;
+					set_marker NORTH SOUTH i_minVal+1;
 				}
 			}
 		}
-		w = look EAST;
-		if(w == FREE)
+		w_wall = look EAST;
+		if(w_wall == FREE)
 		{
-			set_marker EAST WEST minVal+1;
+			set_marker EAST WEST i_minVal+1;
 		}
-		if(w == GOAL)
+		if(w_wall == GOAL)
 		{
 			move EAST;
 			break;
 		}
-		if(w == MARK)
+		if(w_wall == MARK)
 		{
 			if(marker_value EAST >= 0)
 			{
-				if((minVal+1) < marker_value EAST)
+				if((i_minVal+1) < marker_value EAST)
 				{
-					set_marker EAST WEST minVal+1;
+					set_marker EAST WEST i_minVal+1;
 				}
 			}
 		}
-		w= look SOUTH;
-		if(lw == FREE)
+		w_wall= look SOUTH;
+		if(w_wall == FREE)
 		{
-			set_marker SOUTH NORTH minVal+1;
+			set_marker SOUTH NORTH i_minVal+1;
 		}
-		if(w == GOAL)
+		if(w_wall == GOAL)
 		{
 			move SOUTH;
 			break;
 		}
-		if(w == MARK)
+		if(w_wall == MARK)
 		{
 			if(marker_value SOUTH >= 0)
 			{
-				if((minVal+1) < marker_value SOUTH)
+				if((i_minVal+1) < marker_value SOUTH)
 				{
-					set_marker SOUTH NORTH minVal+1;
+					set_marker SOUTH NORTH i_minVal+1;
 				}
 			}
 		}
-		w=look WEST;
-		if(w == FREE)
+		w_wall=look WEST;
+		if(w_wall == FREE)
 		{
-			set_marker WEST EAST minVal+1;
+			set_marker WEST EAST i_minVal+1;
 		}
-		if(w == GOAL)
+		if(w_wall == GOAL)
 		{
 			move WEST;
 			break;
 		}
-		if(w == MARK)
+		if(w_wall == MARK)
 		{
 			if(marker_value WEST >= 0)
 			{
-				if((minVal+1) < marker_value WEST)
+				if((i_minVal+1) < marker_value WEST)
 				{
-					set_marker WEST EAST minVal+1;
+					set_marker WEST EAST i_minVal+1;
 				}
 			}
 		}
-		direction mDir;
-		mDir = marker_direction THIS;
+		direction d_mDir;
+		d_mDir = marker_direction THIS;
 		delete_marker THIS;
-		set_marker THIS mDir -1;
+		set_marker THIS d_mDir -1;
 		
 	}
 	if(position_x == goal_x AND position_y == goal_y)
