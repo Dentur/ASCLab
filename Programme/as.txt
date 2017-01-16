@@ -26,16 +26,18 @@ load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\as_lab.txt";
 			break;
 		}
 		teleport minIndex;
-		if(look NORTH == FREE)
+		wall w;
+		w = look NORTH;
+		if(w == FREE)
 		{
 			set_marker NORTH SOUTH minVal+1;
 		}
-		if(look NORTH == GOAL)
+		if(w == GOAL)
 		{
 			move NORTH;
 			break;
 		}
-		if(look NORTH == MARK)
+		if(w == MARK)
 		{
 			if(marker_value NORTH >= 0)
 			{
@@ -45,16 +47,17 @@ load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\as_lab.txt";
 				}
 			}
 		}
-		if(look EAST == FREE)
+		w = look EAST;
+		if(w == FREE)
 		{
 			set_marker EAST WEST minVal+1;
 		}
-		if(look EAST == GOAL)
+		if(w == GOAL)
 		{
 			move EAST;
 			break;
 		}
-		if(look EAST == MARK)
+		if(w == MARK)
 		{
 			if(marker_value EAST >= 0)
 			{
@@ -64,16 +67,17 @@ load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\as_lab.txt";
 				}
 			}
 		}
-		if(look SOUTH == FREE)
+		w= look SOUTH;
+		if(lw == FREE)
 		{
 			set_marker SOUTH NORTH minVal+1;
 		}
-		if(look SOUTH == GOAL)
+		if(w == GOAL)
 		{
 			move SOUTH;
 			break;
 		}
-		if(look SOUTH == MARK)
+		if(w == MARK)
 		{
 			if(marker_value SOUTH >= 0)
 			{
@@ -83,16 +87,17 @@ load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\as_lab.txt";
 				}
 			}
 		}
-		if(look WEST == FREE)
+		w=look WEST;
+		if(w == FREE)
 		{
 			set_marker WEST EAST minVal+1;
 		}
-		if(look WEST == GOAL)
+		if(w == GOAL)
 		{
 			move WEST;
 			break;
 		}
-		if(look WEST == MARK)
+		if(w == MARK)
 		{
 			if(marker_value WEST >= 0)
 			{
