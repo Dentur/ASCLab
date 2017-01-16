@@ -58,7 +58,7 @@ public:
   int getMarkerTotalCount();
   Direction getMarkerDirection(Direction dir);
   //TODO Fehlende Befehle: 
-  void print(char* str);
+  void print(string printStr);
   //Prints Lab only!
   void print();
 private:

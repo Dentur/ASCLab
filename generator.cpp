@@ -296,7 +296,7 @@ void generate( PT_ENTRY *pentry) {
 			fprintf(cfile, "}\n");
 			break;
 		case PRINT_CMD:
-			fprintf(cfile, "printf(\"%s\");\n", pentry->str);
+			fprintf(cfile, "lab.print(\"%s\");\n", pentry->str);
 			break;
 		case OP_EQ :
 			generate(pentry->op1);

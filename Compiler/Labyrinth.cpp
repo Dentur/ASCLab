@@ -259,6 +259,12 @@ void Labyrinth::print() {
    }
 }
 
+void Labyrinth::print(string printStr) {
+   string str = "printf ";
+   str+=printStr;
+   log(str);
+}
+
 void Labyrinth::move(Direction dir) {
    if (dir == FLOOR) {
       return;

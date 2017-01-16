@@ -234,11 +234,11 @@ void generate( PT_ENTRY *pentry) {
 			for(PT_ENTRY* pt = pentry->op2; pt; pt = pt->nxt)
 				generate(pt);
 			
-         fprintf(cfile, "} catch (const std::exception& ex) {\n");
+         fprintf(cfile, "} catch (const std::exception ex) {\n");
          fprintf(cfile, "FILE* _errorFile = fopen(\"error.txt\", \"w\");\n");
          fprintf(cfile, "fprintf(_errorFile, ex.what());\n");
          fprintf(cfile, "fclose(_errorFile);\n");
-         fprintf(cfile, "}\n}\n");
+         fprintf(cfile, "} \n}\n");
 		break;
 
 		case LOAD_CMD:
@@ -296,7 +296,7 @@ void generate( PT_ENTRY *pentry) {
 			fprintf(cfile, "}\n");
 			break;
 		case PRINT_CMD:
-			fprintf(cfile, "printf(\"%s\");\n", pentry->str);
+			fprintf(cfile, "lab.print(\"%s\");\n", pentry->str);
 			break;
 		case OP_EQ :
 			generate(pentry->op1);
