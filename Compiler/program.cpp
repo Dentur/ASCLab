@@ -5,77 +5,40 @@ int main() {
 try {
 remove("error.txt");
 Labyrinth lab = Labyrinth();
-lab.load("C:/Users/Tim/Desktop/FH/ASC/lab.txt");
-lab.setMarker(FLOOR, FORWARD, 0);
+lab.load("C:/Users/Tim/Desktop/FH/ASC/Project/Programme/pledge_lab.txt");
+int i_counter;
+i_counter=0;
+bool b_holdWall;
+b_holdWall=false;
+Direction d_startDir;
+d_startDir=lab.getViewDirection();
 while ( lab.getXPos() != lab.getGoalXPos() || lab.getYPos() != lab.getGoalYPos()) { 
-int index;
-index=0;
-int minIndex;
-int minVal;
-minIndex=-1;
-minVal=99999;
-while ( index < lab.getMarkerTotalCount()) { 
-int curVal;
-curVal=lab.getMarkerValue(index);
-if (curVal < minVal && curVal != -1) {
-minVal=curVal;
-minIndex=index;
+if (i_counter == 0 && d_startDir == lab.getViewDirection()) {
+b_holdWall=false;
 }
-index=index + 1;
+if (b_holdWall) {
+if (lab.look(RIGHT) == Wall) {
+if (lab.look(FORWARD) == Wall) {
+i_counter=i_counter - 1;
+lab.turn(LEFT);
+} else {
+lab.step(FORWARD);
 }
-if (minIndex == -1) {
-lab.print("Error: Goal cannot be reached (1)");
-break;
+} else {
+i_counter=i_counter + 1;
+lab.move(RIGHT);
 }
-lab.teleport(minIndex);
-if (lab.look(NORTH) == Free) {
-lab.setMarker(NORTH, SOUTH, minVal + 1);
-}
-if (lab.look(NORTH) == Marker) {
-if (lab.getMarkerValue(NORTH) >= 0) {
-if (minVal + 1 < lab.getMarkerValue(NORTH)) {
-lab.setMarker(NORTH, SOUTH, minVal + 1);
+} else {
+if (lab.look(FORWARD) == Wall) {
+lab.turn(LEFT);
+i_counter=i_counter - 1;
+b_holdWall=true;
+} else {
+lab.move(FORWARD);
 }
 }
 }
-if (lab.look(EAST) == Free) {
-lab.setMarker(EAST, WEST, minVal + 1);
-}
-if (lab.look(EAST) == Marker) {
-if (lab.getMarkerValue(EAST) >= 0) {
-if (minVal + 1 < lab.getMarkerValue(EAST)) {
-lab.setMarker(EAST, WEST, minVal + 1);
-}
-}
-}
-if (lab.look(SOUTH) == Free) {
-lab.setMarker(SOUTH, NORTH, minVal + 1);
-}
-if (lab.look(SOUTH) == Marker) {
-if (lab.getMarkerValue(SOUTH) >= 0) {
-if (minVal + 1 < lab.getMarkerValue(SOUTH)) {
-lab.setMarker(SOUTH, NORTH, minVal + 1);
-}
-}
-}
-if (lab.look(WEST) == Free) {
-lab.setMarker(WEST, EAST, minVal + 1);
-}
-if (lab.look(WEST) == Marker) {
-if (lab.getMarkerValue(WEST) >= 0) {
-if (minVal + 1 < lab.getMarkerValue(WEST)) {
-lab.setMarker(WEST, EAST, minVal + 1);
-}
-}
-}
-Direction mDir;
-mDir=lab.getMarkerDirection(FLOOR);
-lab.deleteMarker(FLOOR);
-lab.setMarker(FLOOR, mDir, -1);
-}
-if (lab.getXPos() == lab.getGoalXPos() && lab.getYPos() == lab.getGoalYPos()) {
-lab.print("Ziel gefunden");
-}
+lab.print("Found Goal");
 } catch (const std::exception ex) {
 FILE* _errorFile = fopen("error.txt", "w");
 fprintf(_errorFile, ex.what());

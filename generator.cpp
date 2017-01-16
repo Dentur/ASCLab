@@ -234,11 +234,11 @@ void generate( PT_ENTRY *pentry) {
 			for(PT_ENTRY* pt = pentry->op2; pt; pt = pt->nxt)
 				generate(pt);
 			
-         fprintf(cfile, "} catch (const std::exception& ex) {\n");
+         fprintf(cfile, "} catch (const std::exception ex) {\n");
          fprintf(cfile, "FILE* _errorFile = fopen(\"error.txt\", \"w\");\n");
          fprintf(cfile, "fprintf(_errorFile, ex.what());\n");
          fprintf(cfile, "fclose(_errorFile);\n");
-         fprintf(cfile, "}\n}\n");
+         fprintf(cfile, "} \n}\n");
 		break;
 
 		case LOAD_CMD:
@@ -462,10 +462,10 @@ void generate( PT_ENTRY *pentry) {
 				case 1:
 					fprintf(cfile, "Direction %s;\n", pentry->identifier);
 					break;
-				case 2:
+				case 3:
 					fprintf(cfile, "WallTypes %s;\n", pentry->identifier);
 					break;
-				case 3:
+				case 2:
 					fprintf(cfile, "bool %s;\n", pentry->identifier);
 					break;
 			}
@@ -480,7 +480,12 @@ void generate( PT_ENTRY *pentry) {
 		case VAL_DIGIT:
 			fprintf(cfile, "%d", pentry->num);
 			break;
-			
+		case VAL_FALSE:
+			fprintf(cfile, "false");
+			break;
+		case VAL_TRUE:
+			fprintf(cfile, "true");
+			break;
 		case USE_VARIABLE:
 			fprintf(cfile, "%s", pentry->identifier);
 			break;

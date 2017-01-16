@@ -81,7 +81,10 @@ int isInHeap(char* identifier);
 //VALUE TOKEN
 %token <str>STRING
 %token COMMENT
-%token <str>IDENTIFIER
+%token <str>INT_IDENTIFIER
+%token <str>DIR_IDENTIFIER
+%token <str>WALL_IDENTIFIER
+%token <str>BOOL_IDENTIFIER
 %token <num>DIGIT
 
 //OPERATION TOKEN
@@ -332,7 +335,7 @@ cmd:			TURN direction COMMANDEND
 			    {
 					$$ = $1;
 				};
-assignment:		INT_VAR IDENTIFIER COMMANDEND
+assignment:		INT_VAR INT_IDENTIFIER COMMANDEND
 				{
 					if(isInHeap($2) != -1){
 						yyerror("Variable is already declared!");
@@ -344,7 +347,7 @@ assignment:		INT_VAR IDENTIFIER COMMANDEND
 					$$->num = 0;
 					$$->identifier = $2;
 				}
-			  | IDENTIFIER ASGN arith_expr COMMANDEND
+			  | INT_IDENTIFIER ASGN arith_expr COMMANDEND
 			    {
 					int hType = isInHeap($1);
 					if(hType == -1){
@@ -360,7 +363,7 @@ assignment:		INT_VAR IDENTIFIER COMMANDEND
 					$$->num = 0;
 					$$->op1 = $3;
 				}
-			  | IDENTIFIER ASGN ret_int_cmd COMMANDEND
+			  | INT_IDENTIFIER ASGN ret_int_cmd COMMANDEND
 			    {
 					int hType = isInHeap($1);
 					if(hType == -1){
@@ -376,7 +379,7 @@ assignment:		INT_VAR IDENTIFIER COMMANDEND
 					$$->num = 0;
 					$$->op1 = $3;
 				}
-			  | DIR_VAR IDENTIFIER COMMANDEND
+			  | DIR_VAR DIR_IDENTIFIER COMMANDEND
 			    {
 					if(isInHeap($2) != -1){
 						yyerror("Variable is already declared!");
@@ -388,7 +391,7 @@ assignment:		INT_VAR IDENTIFIER COMMANDEND
 					$$->num = 1;
 					$$->identifier = $2;
 				}
-			  | IDENTIFIER ASGN direction COMMANDEND
+			  | DIR_IDENTIFIER ASGN direction COMMANDEND
 			    {
 					int hType = isInHeap($1);
 					if(hType == -1){
@@ -404,7 +407,7 @@ assignment:		INT_VAR IDENTIFIER COMMANDEND
 					$$->num = 1;
 					$$->op1 = $3;
 				}
-			  | IDENTIFIER ASGN ret_dir_cmd COMMANDEND
+			  | DIR_IDENTIFIER ASGN ret_dir_cmd COMMANDEND
 			    {
 					int hType = isInHeap($1);
 					if(hType == -1){
@@ -420,7 +423,7 @@ assignment:		INT_VAR IDENTIFIER COMMANDEND
 					$$->num = 1;
 					$$->op1 = $3;
 				}
-			  | BOOL_VAR IDENTIFIER COMMANDEND
+			  | BOOL_VAR BOOL_IDENTIFIER COMMANDEND
 			    {
 					if(isInHeap($2) != -1){
 						yyerror("Variable is already declared!");
@@ -432,7 +435,7 @@ assignment:		INT_VAR IDENTIFIER COMMANDEND
 					$$->num = 2;
 					$$->identifier = $2;
 				}
-			  | IDENTIFIER ASGN bool_expr COMMANDEND
+			  | BOOL_IDENTIFIER ASGN bool_expr COMMANDEND
 			    {
 					int hType = isInHeap($1);
 					if(hType == -1){
@@ -448,7 +451,7 @@ assignment:		INT_VAR IDENTIFIER COMMANDEND
 					$$->num = 2;
 					$$->op1 = $3;
 				}
-			  | WALL_VAR IDENTIFIER COMMANDEND
+			  | WALL_VAR WALL_IDENTIFIER COMMANDEND
 			    {
 					if(isInHeap($2) != -1){
 						yyerror("Variable is already declared!");
@@ -460,7 +463,7 @@ assignment:		INT_VAR IDENTIFIER COMMANDEND
 					$$->num = 3;
 					$$->identifier = $2;
 				}
-			  | IDENTIFIER ASGN ret_wall_cmd COMMANDEND
+			  | WALL_IDENTIFIER ASGN ret_wall_cmd COMMANDEND
 			    {
 					int hType = isInHeap($1);
 					if(hType == -1){
@@ -476,7 +479,7 @@ assignment:		INT_VAR IDENTIFIER COMMANDEND
 					$$->num = 3;
 					$$->op1 = $3;
 				}
-			  | IDENTIFIER ASGN wall COMMANDEND
+			  | WALL_IDENTIFIER ASGN wall COMMANDEND
 			    {
 					int hType = isInHeap($1);
 					if(hType == -1){
@@ -520,7 +523,7 @@ arith_expr :	DIGIT
 					$$->type = VAL_DIGIT;
 					$$->num = $1;
 				}
-			|	IDENTIFIER
+			|	INT_IDENTIFIER
 				{
 					int hType = isInHeap($1);
 					if(hType == -1){
@@ -608,6 +611,16 @@ bool_expr	:	rel_expr
 				{
 					$$ = $1;
 				}
+			|	TRUE
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = VAL_TRUE;
+				}
+			|	FALSE
+				{
+					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
+					$$->type = VAL_FALSE;
+				}
 			|	NOT rel_expr
 				{
 					$$ = (PT_ENTRY *)calloc( 1, sizeof( PT_ENTRY));
@@ -675,7 +688,7 @@ bool_expr	:	rel_expr
 				{
 					$$ = $2;
 				}
-			| 	IDENTIFIER
+			| 	BOOL_IDENTIFIER
 				{
 					int hType = isInHeap($1);
 					if(hType == -1){
@@ -719,7 +732,11 @@ wall:			FREE
 					$$->type = WALL_TYPE;
 					$$->num = 4;
 			    }
-			  | IDENTIFIER
+			  | ret_wall_cmd
+				{
+					$$ = $1;
+				}
+			  | WALL_IDENTIFIER
 				{
 					int hType = isInHeap($1);
 					if(hType == -1){
@@ -787,7 +804,11 @@ direction:		NORTH
 					$$->type = DIRECTION;
 					$$->num = 8;
 				}
-			  | IDENTIFIER
+			  | ret_dir_cmd
+				{
+					$$ = $1;
+				}
+			  | DIR_IDENTIFIER
 				{
 					int hType = isInHeap($1);
 					if(hType == -1){

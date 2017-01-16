@@ -1,25 +1,25 @@
 load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\pledge_lab.txt";
 {	
-	int counter;
-	counter = 0;
-	bool holdWall;
-	holdWall = false;
-	DIRECTION startDir;
-	startDir = get_direction;
+	int i_counter;
+	i_counter = 0;
+	bool b_holdWall;
+	b_holdWall = false;
+	direction d_startDir;
+	d_startDir = get_direction;
 	
 	while(position_x != goal_x OR position_y != goal_y)
 	{
-		if(counter == 0 AND startDir == get_direction)
+		if(i_counter == 0 AND d_startDir == get_direction)
 		{
-			holdWall = false;
+			b_holdWall = false;
 		}
-		if(holdWall)
+		if(b_holdWall)
 		{
 			if(look RIGHT == WALL)
 			{
 				if(look FORWARD == WALL)
 				{
-					counter = counter -1;
+					i_counter = i_counter -1;
 					turn LEFT;
 				}
 				else
@@ -29,7 +29,7 @@ load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\pledge_lab.txt";
 			}
 			else
 			{
-				conter = counter+1;
+				i_counter = i_counter+1;
 				move RIGHT;
 			}
 		}
@@ -38,8 +38,8 @@ load "C:\Users\Tim\Desktop\FH\ASC\Project\Programme\pledge_lab.txt";
 			if(look FORWARD == WALL)
 			{
 				turn LEFT;
-				conter = counter + 1;
-				holdWall = true;
+				i_counter = i_counter - 1;
+				b_holdWall = true;
 			}
 			else
 			{

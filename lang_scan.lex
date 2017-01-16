@@ -94,10 +94,25 @@ int startCMD = -1;
 						yylval.str = malloc( yyleng+1);
 						strcpy( yylval.str, yytext);
 						return COMMENT; }
-[a-zA-Z_][a-zA-Z0-9_]*	{
+"i_"[a-zA-Z][a-zA-Z0-9_]*		{
 						yylval.str = malloc( yyleng+1);
 						strcpy( yylval.str, yytext);
-						return IDENTIFIER;
+						return INT_IDENTIFIER;
+						}
+"d_"[a-zA-Z][a-zA-Z0-9_]*		{
+						yylval.str = malloc( yyleng+1);
+						strcpy( yylval.str, yytext);
+						return DIR_IDENTIFIER;
+						}
+"w_"[a-zA-Z][a-zA-Z0-9_]*		{
+						yylval.str = malloc( yyleng+1);
+						strcpy( yylval.str, yytext);
+						return WALL_IDENTIFIER;
+						}
+"b_"[a-zA-Z][a-zA-Z0-9_]*		{
+						yylval.str = malloc( yyleng+1);
+						strcpy( yylval.str, yytext);
+						return BOOL_IDENTIFIER;
 						}
 [0-9][0-9]*				{
 						yylval.num = (int) atoi(yytext);

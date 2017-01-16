@@ -70,4 +70,6 @@ PT_ENTRY
 #define WALL_TYPE 		1113
 #define NEW_ASSIGN 		1114
 #define ASSIGN 			1115
+#define VAL_TRUE 		1116
+#define VAL_FALSE 		1117
 #endif
